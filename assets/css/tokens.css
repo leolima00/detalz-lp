@@ -1,0 +1,267 @@
+/* ============================================================================
+   DETALZ — DESIGN SYSTEM / 01 · TOKENS
+   ----------------------------------------------------------------------------
+   Camada única de verdade. Nenhum valor bruto (hex, px de raio, curva de
+   easing) deve aparecer fora deste arquivo.
+
+   Os nomes semânticos espelham 1:1 os tokens já usados no app Detalz
+   (background, foreground, mineral, mineral-contrast, mineral-fg, card,
+   border-subtle, state-*), para que landing e produto compartilhem a mesma
+   linguagem sem tradução.
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     1 · RAMPAS PRIMITIVAS
+     Nunca use diretamente na UI — sempre via token semântico da seção 2.
+     ========================================================================== */
+
+  /* Grafite — neutro levemente frio, base do produto */
+  --dz-graphite-1000: #060708;
+  --dz-graphite-950:  #0a0b0d;
+  --dz-graphite-900:  #0e1013;
+  --dz-graphite-850:  #131519;
+  --dz-graphite-800:  #191c21;
+  --dz-graphite-700:  #23272e;
+  --dz-graphite-600:  #333941;
+  --dz-graphite-500:  #4c545e;
+  --dz-graphite-400:  #6d7681;
+  --dz-graphite-300:  #939ca6;
+  --dz-graphite-200:  #bcc3ca;
+  --dz-graphite-100:  #dfe3e7;
+  --dz-graphite-50:   #f2f4f6;
+  --dz-graphite-0:    #ffffff;
+
+  /* Mineral — acento da marca.
+     Verdigris: cobre oxidado. Mineral de verdade, frio, técnico e legível
+     sobre grafite. É o único acento cromático do sistema.
+     >>> Trocar a marca inteira = trocar estas 5 linhas. */
+  --dz-mineral-700: #12564d;
+  --dz-mineral-600: #1a7a6c;
+  --dz-mineral-500: #2aa08c;
+  --dz-mineral-400: #3fbfa8;
+  --dz-mineral-300: #6fdcc6;
+  --dz-mineral-200: #a4ecdd;
+
+  /* Estados — usados só para status operacional, nunca decorativos */
+  --dz-danger-500:  #e05252;
+  --dz-danger-300:  #ff9d9d;
+  --dz-warn-500:    #d99a2b;
+  --dz-warn-300:    #f5c96b;
+  --dz-ok-500:      #34b37a;
+  --dz-ok-300:      #6fe0a8;
+  --dz-info-500:    #4a8fd4;
+  --dz-info-300:    #93c2f0;
+
+  /* ==========================================================================
+     2 · SEMÂNTICA — TEMA ESCURO (padrão, igual ao app)
+     ========================================================================== */
+
+  --background:            var(--dz-graphite-1000);
+  --background-elevated:   var(--dz-graphite-900);
+  --foreground:            #eef1f3;
+  --muted:                 var(--dz-graphite-850);
+  --muted-foreground:      var(--dz-graphite-300);
+
+  --card:                  rgba(255, 255, 255, 0.028);
+  --card-foreground:       var(--foreground);
+  --secondary:             rgba(255, 255, 255, 0.06);
+  --accent:                rgba(255, 255, 255, 0.055);
+
+  --border:                rgba(255, 255, 255, 0.10);
+  --border-subtle:         rgba(255, 255, 255, 0.065);
+  --border-strong:         rgba(255, 255, 255, 0.18);
+
+  --mineral:               var(--dz-mineral-400);
+  --mineral-contrast:      #04211c;   /* texto sobre fundo mineral */
+  --mineral-fg:            var(--dz-mineral-300); /* mineral como texto, sobre escuro */
+  --mineral-soft:          rgba(63, 191, 168, 0.14);
+  --mineral-line:          rgba(63, 191, 168, 0.34);
+
+  --primary:               var(--foreground);
+  --primary-foreground:    var(--dz-graphite-1000);
+
+  --destructive:           var(--dz-danger-500);
+  --destructive-foreground:#1a0708;
+
+  --state-danger-bg:       rgba(224, 82, 82, 0.14);
+  --state-danger-fg:       var(--dz-danger-300);
+  --state-warn-bg:         rgba(217, 154, 43, 0.14);
+  --state-warn-fg:         var(--dz-warn-300);
+  --state-ok-bg:           rgba(52, 179, 122, 0.14);
+  --state-ok-fg:           var(--dz-ok-300);
+  --state-info-bg:         rgba(74, 143, 212, 0.14);
+  --state-info-fg:         var(--dz-info-300);
+
+  /* Seleção de texto e foco */
+  --selection-bg:          var(--dz-mineral-400);
+  --selection-fg:          var(--mineral-contrast);
+  --focus-ring:            var(--dz-mineral-400);
+
+  /* ==========================================================================
+     3 · TIPOGRAFIA
+     Três vozes, com papéis rígidos:
+       display  → títulos e números-manchete (Inter Tight)
+       sans     → leitura corrida e interface (Inter)
+       mono     → dado técnico: medidas, códigos, unidades (JetBrains Mono)
+     Mono não é enfeite: é o que dá autoridade de "móvel sob medida".
+     ========================================================================== */
+
+  --font-display: "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:    "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Escala fluida — clamp(min, preferido, max) */
+  --text-hero:      clamp(2.75rem, 9.2vw, 7rem);
+  --text-display:   clamp(2.25rem, 6vw, 4.5rem);
+  --text-title:     clamp(1.75rem, 3.6vw, 3rem);
+  --text-heading:   clamp(1.375rem, 2.2vw, 1.875rem);
+  --text-section:   1.0625rem;
+  --text-lead:      clamp(1.0625rem, 1.4vw, 1.1875rem);
+  --text-body:      1rem;
+  --text-meta:      0.8125rem;
+  --text-technical: 0.75rem;
+  --text-eyebrow:   0.6875rem;
+  --text-micro:     0.625rem;
+
+  --leading-tight:  0.94;
+  --leading-snug:   1.06;
+  --leading-normal: 1.35;
+  --leading-relaxed:1.7;
+
+  --tracking-hero:     -0.045em;
+  --tracking-display:  -0.035em;
+  --tracking-title:    -0.025em;
+  --tracking-heading:  -0.015em;
+  --tracking-body:     -0.005em;
+  --tracking-technical: 0.06em;
+  --tracking-eyebrow:   0.28em;
+
+  --weight-light:  300;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semi:   600;
+
+  /* ==========================================================================
+     4 · ESPAÇAMENTO E LAYOUT — base 4px
+     ========================================================================== */
+
+  --space-1: 0.25rem;   --space-2: 0.5rem;    --space-3: 0.75rem;
+  --space-4: 1rem;      --space-5: 1.25rem;   --space-6: 1.5rem;
+  --space-8: 2rem;      --space-10: 2.5rem;   --space-12: 3rem;
+  --space-16: 4rem;     --space-20: 5rem;     --space-24: 6rem;
+  --space-32: 8rem;
+
+  --shell-max:   80rem;   /* 1280px — grid principal */
+  --shell-text:  46rem;   /* medida de leitura confortável */
+  --gutter:      clamp(1.25rem, 4vw, 2.5rem);
+  --section-y:   clamp(5rem, 12vh, 9rem);
+
+  /* ==========================================================================
+     5 · FORMA
+     ========================================================================== */
+
+  --radius-xs:  0.375rem;
+  --radius-sm:  0.625rem;
+  --radius-md:  0.875rem;
+  --radius-lg:  1rem;
+  --radius-xl:  1.5rem;
+  --radius-2xl: 2rem;
+  --radius-full: 999px;
+
+  --hairline: 1px;
+
+  /* ==========================================================================
+     6 · ELEVAÇÃO E ATMOSFERA
+     No escuro, elevação é luz — não sombra. Sombra só ancora o que flutua.
+     ========================================================================== */
+
+  --shadow-soft:    0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-lifted:  0 18px 48px -12px rgba(0, 0, 0, 0.72), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-mineral: 0 18px 52px -16px rgba(63, 191, 168, 0.42);
+
+  --glass-bg:     rgba(18, 20, 24, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-blur:   16px;
+
+  /* Campo ambiente — a aura mineral que marca "aqui o motor está trabalhando" */
+  --ambient-a: rgba(63, 191, 168, 0.16);
+  --ambient-b: rgba(74, 143, 212, 0.10);
+
+  --grain-opacity: 0.045;
+
+  /* ==========================================================================
+     7 · MOVIMENTO
+     Um vocabulário fechado de curvas. Nada de easing improvisado no componente.
+     ========================================================================== */
+
+  --ease-out:   cubic-bezier(0.16, 1, 0.30, 1);   /* saída padrão, "expo.out" */
+  --ease-inout: cubic-bezier(0.76, 0, 0.24, 1);   /* troca de estado */
+  --ease-entry: cubic-bezier(0.22, 1, 0.36, 1);   /* entrada de conteúdo */
+  --ease-snap:  cubic-bezier(0.34, 1.56, 0.64, 1);/* micro-feedback */
+
+  --dur-instant: 120ms;
+  --dur-fast:    200ms;
+  --dur-base:    360ms;
+  --dur-slow:    620ms;
+  --dur-reveal:  1100ms;
+  --dur-cinema:  1600ms;
+
+  --stagger: 70ms;
+
+  /* ==========================================================================
+     8 · CAMADAS
+     ========================================================================== */
+
+  --z-grain:     150;
+  --z-progress:  160;
+  --z-header:    50;
+  --z-overlay:   120;
+  --z-preloader: 200;
+  --z-cursor:    300;
+}
+
+/* ============================================================================
+   TEMA CLARO — seções de respiro da landing e superfícies de documento.
+   Aplique com data-surface="light" em qualquer <section>.
+   ========================================================================== */
+
+[data-surface="light"] {
+  --background:          var(--dz-graphite-50);
+  --background-elevated: var(--dz-graphite-0);
+  --foreground:          var(--dz-graphite-950);
+  --muted:               var(--dz-graphite-100);
+  --muted-foreground:    var(--dz-graphite-500);
+
+  --card:                rgba(255, 255, 255, 0.86);
+  --secondary:           rgba(10, 11, 13, 0.045);
+  --accent:              rgba(10, 11, 13, 0.04);
+
+  --border:              rgba(10, 11, 13, 0.12);
+  --border-subtle:       rgba(10, 11, 13, 0.08);
+  --border-strong:       rgba(10, 11, 13, 0.22);
+
+  --mineral:             var(--dz-mineral-500);
+  --mineral-contrast:    #ffffff;
+  --mineral-fg:          var(--dz-mineral-700);
+  --mineral-soft:        rgba(42, 160, 140, 0.12);
+  --mineral-line:        rgba(42, 160, 140, 0.32);
+
+  --primary:             var(--dz-graphite-950);
+  --primary-foreground:  var(--dz-graphite-0);
+
+  --state-danger-fg:     #a32d2d;
+  --state-warn-fg:       #8a5f10;
+  --state-ok-fg:         #1c7a51;
+  --state-info-fg:       #2b5f96;
+
+  --glass-bg:            rgba(255, 255, 255, 0.72);
+  --glass-border:        rgba(10, 11, 13, 0.08);
+
+  --shadow-lifted:       0 18px 48px -14px rgba(10, 11, 13, 0.18), 0 2px 6px rgba(10, 11, 13, 0.06);
+  --shadow-soft:         0 1px 2px rgba(10, 11, 13, 0.06);
+
+  --ambient-a:           rgba(42, 160, 140, 0.14);
+  --ambient-b:           rgba(74, 143, 212, 0.08);
+  --grain-opacity:       0.03;
+}

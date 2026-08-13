@@ -1,0 +1,147 @@
+/* ============================================================================
+   DETALZ — DESIGN SYSTEM / 04 · MOVIMENTO
+   ----------------------------------------------------------------------------
+   Contrato de animação: cada primitiva é um atributo `data-*` no HTML, e o
+   estado inicial vive aqui. O JS só toca no que já está declarado.
+
+   Regra: os estados escondidos só valem quando .js está no <html> E o GSAP
+   carregou. Se o script falhar, a página continua legível — nunca em branco.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   ESTADOS PRÉ-ANIMAÇÃO
+   -------------------------------------------------------------------------- */
+
+.js [data-reveal],
+.js [data-fade],
+.js [data-stagger] > *,
+.js [data-story] { opacity: 0; }
+
+.js [data-clip] { clip-path: inset(0 0 100% 0); }
+
+.js [data-line] { transform: scaleX(0); transform-origin: left center; }
+
+/* [data-story] entra deslizando de 100px fora do lugar. Enquanto o cartão não
+   foi acionado, esse offset é largura real de página — em telas estreitas vira
+   barra de rolagem horizontal. `clip` corta sem criar contexto de rolagem, então
+   nenhum pin do ScrollTrigger é afetado. */
+[data-story-grid] { overflow-x: clip; }
+
+/* Máscaras de linha produzidas pelo divisor de texto.
+   O padding superior é obrigatório: com leading apertado (0.86–0.94) o
+   overflow:hidden corta o til de "NÃO" e o acento de "Ó". A margem negativa
+   devolve o espaço para o fluxo, então nada se desloca. */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-top: 0.16em;
+  margin-top: -0.16em;
+}
+.line-inner { display: block; will-change: transform; }
+.word { display: inline-block; white-space: pre; }
+
+/* --------------------------------------------------------------------------
+   MÁQUINA DE ESCREVER
+   Uma cópia invisível do texto final segura a caixa; o texto digitado é
+   sobreposto. Assim a quebra de linha é idêntica e nada abaixo pula.
+   -------------------------------------------------------------------------- */
+
+[data-type] { position: relative; }
+.type-ghost { visibility: hidden; }
+.type-live { position: absolute; inset-inline-start: 0; top: 0; width: 100%; }
+.type-line { display: inline; }
+
+.caret {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 2px;
+  background: currentColor;
+  vertical-align: -0.12em;
+  opacity: 0;
+}
+
+.caret.is-live { animation: dz-caret 0.9s steps(1, end) infinite; }
+
+@keyframes dz-caret {
+  0%, 49%   { opacity: 0.9; }
+  50%, 100% { opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   MICRO-INTERAÇÕES CONTÍNUAS
+   -------------------------------------------------------------------------- */
+
+[data-magnetic] { will-change: transform; }
+
+.pulse-dot { position: relative; }
+
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--mineral);
+  opacity: 0;
+  animation: dz-pulse 2.6s var(--ease-out) infinite;
+}
+
+@keyframes dz-pulse {
+  0%   { transform: scale(0.6); opacity: 0.7; }
+  70%  { transform: scale(2.1); opacity: 0; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
+/* Fio de dado percorrendo uma aresta — "o detalhe seguindo o caminho" */
+.flow-wire {
+  stroke-dasharray: 6 10;
+  animation: dz-wire 1.4s linear infinite;
+}
+
+@keyframes dz-wire {
+  to { stroke-dashoffset: -16; }
+}
+
+.hover-lift {
+  transition: transform var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+
+.hover-lift:is(:hover, .is-hover) {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lifted);
+}
+
+/* --------------------------------------------------------------------------
+   MOVIMENTO REDUZIDO
+   Não é degradação: é a mesma página, entregue de uma vez.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .js [data-reveal],
+  .js [data-fade],
+  .js [data-stagger] > *,
+  .js [data-story] { opacity: 1 !important; }
+
+  .js [data-clip] { clip-path: none !important; }
+  .js [data-line] { transform: none !important; }
+
+  #dz-preloader,
+  .pl-panel,
+  #pl-panel,
+  #dz-grain,
+  #dz-cursor,
+  #dz-cursor-dot { display: none !important; }
+
+  .flow-chip { opacity: 1 !important; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

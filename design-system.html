@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-surface="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalz — Design System</title>
+<meta name="description" content="Referência viva do design system da Detalz: tokens, tipografia, superfícies, componentes, estados de ponteiro e primitivas de movimento — todas demonstradas rodando.">
+
+<link rel="icon" href="assets/brand/favicon.png" type="image/png" sizes="512x512">
+<link rel="icon" href="assets/brand/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/motion.css">
+
+<script>
+document.documentElement.classList.add('js');
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+</script>
+
+<style>
+  /* Estilos exclusivos desta página de documentação — não fazem parte do DS. */
+  .doc-nav {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    padding: var(--space-4) 0;
+    background: color-mix(in srgb, var(--background) 88%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .doc-section { padding-block: var(--space-16); border-top: 1px solid var(--border-subtle); }
+  .doc-section:first-of-type { border-top: 0; }
+
+  .swatch { display: grid; gap: var(--space-3); }
+  .swatch__chip {
+    height: 4.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .spec {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-3);
+    border-top: 1px dashed var(--border-subtle);
+  }
+
+  .demo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.8125em;
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-xs);
+    background: var(--secondary);
+    color: var(--mineral-fg);
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+  .theme-toggle button {
+    padding: 0.5rem 1rem;
+    font-family: var(--font-display);
+    font-size: var(--text-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  .theme-toggle button[aria-pressed="true"] {
+    background: var(--mineral);
+    color: var(--mineral-contrast);
+  }
+
+  /* -------- Laboratório de movimento -------- */
+
+  /* Cada primitiva vive numa caixa com nome, código e botão de repetir. Uma
+     animação de entrada dispara uma vez por carregamento; sem repetir, quem lê
+     a documentação vê o efeito no máximo uma vez — e nunca duas vezes seguidas
+     para comparar. */
+  .lab {
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--card);
+  }
+  .lab__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--secondary);
+  }
+  .lab__stage {
+    display: grid;
+    place-items: center;
+    min-height: 9rem;
+    padding: var(--space-6);
+  }
+  .lab__stage--left { place-items: center start; }
+  .lab__note {
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px dashed var(--border-subtle);
+  }
+  .lab__replay {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex: none;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-size: var(--text-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    transition: color var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out);
+  }
+  .lab__replay:hover { color: var(--mineral-fg); border-color: var(--mineral); }
+  .lab__replay svg { width: 0.75rem; height: 0.75rem; }
+
+  /* Matriz de estados: repouso, ponteiro e pressionado lado a lado. */
+  .matrix { display: grid; gap: var(--space-4); }
+  .matrix__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: center;
+    padding-top: var(--space-4);
+    border-top: 1px dashed var(--border-subtle);
+  }
+  @media (min-width: 760px) {
+    .matrix__row { grid-template-columns: 9rem repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+  }
+  .matrix__head {
+    display: none;
+    font-family: var(--font-display);
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  @media (min-width: 760px) {
+    .matrix__head { display: grid; grid-template-columns: 9rem repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+  }
+
+  /* Pista de easing: o quadrado atravessa usando o token real, não uma cópia. */
+  .track {
+    position: relative;
+    container-type: inline-size;
+    height: 2.25rem;
+    border-radius: var(--radius-sm);
+    background: var(--secondary);
+    overflow: hidden;
+  }
+  .track__runner {
+    position: absolute;
+    top: 50%;
+    left: 0.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: -0.625rem;
+    border-radius: var(--radius-xs);
+    background: var(--mineral);
+    transform: translateX(0);
+  }
+  .track.is-running .track__runner { transform: translateX(calc(100cqw - 2rem)); }
+
+  .track--out    .track__runner { transition: transform var(--dur-cinema) var(--ease-out); }
+  .track--inout  .track__runner { transition: transform var(--dur-cinema) var(--ease-inout); }
+  .track--entry  .track__runner { transition: transform var(--dur-cinema) var(--ease-entry); }
+  .track--snap   .track__runner { transition: transform var(--dur-cinema) var(--ease-snap); }
+  .track--linear .track__runner { transition: transform var(--dur-cinema) linear; }
+
+  .dur { display: grid; gap: var(--space-2); }
+  /* O trilho tem de existir em repouso: sem ele a barra a zero é invisível e a
+     seção parece vazia até alguém clicar em repetir. */
+  .dur__rail {
+    height: 0.375rem;
+    border-radius: var(--radius-full);
+    background: var(--secondary);
+    overflow: hidden;
+  }
+  .dur__bar {
+    height: 100%;
+    border-radius: var(--radius-full);
+    background: var(--mineral);
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+  .dur.is-running .dur__bar { transform: scaleX(1); }
+  .dur--fast   .dur__bar { transition: transform var(--dur-fast) linear; }
+  .dur--base   .dur__bar { transition: transform var(--dur-base) linear; }
+  .dur--slow   .dur__bar { transition: transform var(--dur-slow) linear; }
+  .dur--reveal .dur__bar { transition: transform var(--dur-reveal) linear; }
+  .dur--cinema .dur__bar { transition: transform var(--dur-cinema) linear; }
+</style>
+</head>
+
+<body>
+
+<!-- O mesmo cromo da landing: sem ele, o cursor, o grão e a barra de progresso
+     não existiriam aqui — e são parte do sistema, não da página. -->
+<div id="dz-progress"></div>
+<div id="dz-grain"></div>
+<div id="dz-cursor"><span class="cursor-label"></span></div>
+<div id="dz-cursor-dot"></div>
+
+<nav class="doc-nav">
+  <div class="ds-canvas ds-row" style="justify-content:space-between">
+    <span class="site-header__brand">
+      <span class="brand-logo" role="img" aria-label="Detalz"></span>
+      · DS
+    </span>
+    <div class="ds-row" style="gap:var(--space-4)">
+      <div class="theme-toggle" role="group" aria-label="Trocar superfície">
+        <button type="button" data-theme="dark" aria-pressed="true">Escuro</button>
+        <button type="button" data-theme="light" aria-pressed="false">Claro</button>
+      </div>
+      <a href="index.html" class="ds-technical link-underline t-mineral" data-cursor="Landing">ver a landing →</a>
+    </div>
+  </div>
+</nav>
+
+<main class="ds-canvas">
+
+  <header class="doc-section">
+    <p class="ds-eyebrow" data-reveal>Design system · v1</p>
+    <h1 class="ds-display" style="margin-top:var(--space-5);max-width:20ch" data-split="lines">
+      A linguagem visual da Detalz.
+    </h1>
+    <p class="ds-lead" style="margin-top:var(--space-6);max-width:60ch" data-reveal="0.1">
+      Um sistema construído sobre uma tese: o detalhe não se perde no caminho.
+      Isso se traduz em decisões concretas — dado técnico sempre em mono, sugestão
+      de IA sempre com casca própria, estado sempre com motivo, movimento sempre
+      com contrato declarado no HTML.
+    </p>
+    <div class="ds-row" style="margin-top:var(--space-8)" data-stagger>
+      <span class="chip chip--outline">4 arquivos CSS</span>
+      <span class="chip chip--outline">1 engine de movimento</span>
+      <span class="chip chip--mineral">Sem framework</span>
+    </div>
+    <p class="ds-meta" style="margin-top:var(--space-6);max-width:60ch" data-reveal="0.2">
+      Esta página roda o motor de verdade — o mesmo <code>motion.js</code> da
+      landing. O que você vê animando aqui é o comportamento em produção, não uma
+      reprodução.
+    </p>
+  </header>
+
+  <!-- =========================== MARCA ============================ -->
+  <section class="doc-section">
+    <p class="ds-eyebrow" data-reveal>01 — Marca</p>
+    <h2 class="ds-title" style="margin-top:var(--space-4)" data-split="lines">Duas versões, nada de terceira.</h2>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      O logotipo existe em branco e em preto — a escolha é da superfície, não do
+      gosto. Sobre grafite, branco. Sobre claro, preto. A régua no
+      <strong class="t-strong">L</strong> é a assinatura da marca: é o detalhe que
+      não se perde. Ela nunca é removida, redesenhada ou recolorida.
+    </p>
+
+    <div class="ds-grid md:cols-2" style="margin-top:var(--space-10);gap:var(--space-5)" data-stagger>
+      <div class="swatch">
+        <div class="demo" style="justify-content:center;padding-block:var(--space-10);background:var(--dz-graphite-1000)">
+          <img src="assets/brand/detalz-wordmark-white.svg" alt="Logotipo Detalz na versão branca" style="width:min(100%,17rem)">
+        </div>
+        <p class="ds-technical">detalz-wordmark-white.svg · sobre grafite</p>
+      </div>
+      <div class="swatch">
+        <div class="demo" style="justify-content:center;padding-block:var(--space-10);background:var(--dz-graphite-50)">
+          <img src="assets/brand/detalz-wordmark-black.svg" alt="Logotipo Detalz na versão preta" style="width:min(100%,17rem)">
+        </div>
+        <p class="ds-technical">detalz-wordmark-black.svg · sobre claro</p>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-10)" data-reveal>Marca reduzida</h3>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      Abaixo de 5rem de largura a régua do L fecha e o wordmark vira borrão. Nesse
+      território — favicon, avatar, ícone de app — entra o <strong class="t-strong">D</strong>
+      isolado.
+    </p>
+    <div class="demo" style="margin-top:var(--space-5);gap:var(--space-8)" data-reveal>
+      <img src="assets/brand/detalz-mark-white.png" alt="Marca reduzida Detalz" width="512" height="512" style="width:4rem">
+      <img src="assets/brand/favicon.png" alt="Favicon Detalz" width="512" height="512" style="width:2.5rem;border-radius:var(--radius-sm)">
+      <p class="ds-meta" style="max-width:34ch">O favicon leva fundo grafite próprio: aba clara não pode engolir a marca.</p>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-10)" data-reveal>Uso</h3>
+    <div style="margin-top:var(--space-5)">
+      <div class="spec"><span class="ds-body">Respiro mínimo em volta</span><span class="ds-technical t-muted">altura da caixa alta</span></div>
+      <div class="spec"><span class="ds-body">Altura no header</span><span class="ds-technical t-muted">1rem · <code>.brand-logo</code></span></div>
+      <div class="spec"><span class="ds-body">Largura mínima do wordmark</span><span class="ds-technical t-muted">5rem</span></div>
+      <div class="spec"><span class="ds-body">Sobre foto ou gradiente</span><span class="ds-technical t-muted">só a versão branca</span></div>
+      <div class="spec"><span class="ds-body">Distorcer, inclinar, sombrear, aplicar mineral</span><span class="ds-technical t-danger">nunca</span></div>
+    </div>
+  </section>
+
+  <!-- ============================ COR ============================= -->
+  <section class="doc-section">
+    <p class="ds-eyebrow" data-reveal>02 — Cor</p>
+    <h2 class="ds-title" style="margin-top:var(--space-4)" data-split="lines">Um acento só.</h2>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      Grafite carrega tudo. <strong class="t-strong">Mineral</strong> é o único acento
+      cromático e significa uma coisa: aqui o motor da Detalz está trabalhando.
+      Estado (perigo, atenção, ok) nunca é decorativo — só aparece quando existe
+      um fato operacional por trás.
+    </p>
+
+    <h3 class="ds-section" style="margin-top:var(--space-10)" data-reveal>Mineral</h3>
+    <div class="ds-grid md:cols-3 lg:cols-4" style="margin-top:var(--space-5)" data-stagger>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-mineral-700)"></div><p class="ds-technical">700 · #12564D</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-mineral-600)"></div><p class="ds-technical">600 · #1A7A6C</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-mineral-500)"></div><p class="ds-technical">500 · #2AA08C</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-mineral-400)"></div><p class="ds-technical">400 · #3FBFA8 <span class="t-mineral">base</span></p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-mineral-300)"></div><p class="ds-technical">300 · #6FDCC6 <span class="t-mineral">texto</span></p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-mineral-200)"></div><p class="ds-technical">200 · #A4ECDD</p></div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-10)" data-reveal>Grafite</h3>
+    <div class="ds-grid md:cols-4 lg:cols-4" style="margin-top:var(--space-5)" data-stagger>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-graphite-1000)"></div><p class="ds-technical">1000 · fundo</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-graphite-900)"></div><p class="ds-technical">900 · elevado</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-graphite-800)"></div><p class="ds-technical">800</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-graphite-600)"></div><p class="ds-technical">600</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-graphite-400)"></div><p class="ds-technical">400</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-graphite-200)"></div><p class="ds-technical">200</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-graphite-50)"></div><p class="ds-technical">50 · fundo claro</p></div>
+      <div class="swatch"><div class="swatch__chip" style="background:var(--dz-graphite-0)"></div><p class="ds-technical">0</p></div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-10)" data-reveal>Estado</h3>
+    <div class="demo" style="margin-top:var(--space-5)" data-stagger>
+      <span class="chip chip--danger">11 bloqueios no portão</span>
+      <span class="chip chip--warn">Parado há 32 dias</span>
+      <span class="chip chip--ok">Liberado para produção</span>
+      <span class="chip chip--info">Aguardando cliente</span>
+      <span class="chip chip--mineral">Sugestão da Talez</span>
+      <span class="chip chip--outline">Neutro</span>
+    </div>
+  </section>
+
+  <!-- ========================= TIPOGRAFIA ========================= -->
+  <section class="doc-section">
+    <p class="ds-eyebrow" data-reveal>03 — Tipografia</p>
+    <h2 class="ds-title" style="margin-top:var(--space-4)" data-split="lines">Três vozes, papéis rígidos.</h2>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      <strong class="t-strong">Inter Tight</strong> para título e número-manchete.
+      <strong class="t-strong">Inter</strong> para leitura.
+      <strong class="t-strong">JetBrains Mono</strong> para dado técnico — medida,
+      código, unidade, versão. Mono não é enfeite: é o que dá autoridade de móvel
+      sob medida, e sinaliza "isto é um fato, não uma opinião".
+    </p>
+
+    <div class="ds-stack-8" style="margin-top:var(--space-10)">
+      <div data-reveal>
+        <p class="ds-technical t-muted">.ds-hero — clamp(2.75rem, 9.2vw, 7rem) / 0.94 / -0.045em</p>
+        <p class="ds-hero" style="margin-top:var(--space-3)">O detalhe não se perde</p>
+      </div>
+      <div data-reveal>
+        <p class="ds-technical t-muted">.ds-display — clamp(2.25rem, 6vw, 4.5rem)</p>
+        <p class="ds-display" style="margin-top:var(--space-3)">Projeto, orçamento, engenharia</p>
+      </div>
+      <div data-reveal>
+        <p class="ds-technical t-muted">.ds-title — clamp(1.75rem, 3.6vw, 3rem)</p>
+        <p class="ds-title" style="margin-top:var(--space-3)">Um fluxo, quatro momentos</p>
+      </div>
+      <div data-reveal>
+        <p class="ds-technical t-muted">.ds-heading — clamp(1.375rem, 2.2vw, 1.875rem)</p>
+        <p class="ds-heading" style="margin-top:var(--space-3)">Só passa o que é produzível</p>
+      </div>
+      <div data-reveal>
+        <p class="ds-technical t-muted">.ds-section — 1.0625rem / 600</p>
+        <p class="ds-section" style="margin-top:var(--space-3)">Operação hoje</p>
+      </div>
+      <div data-reveal>
+        <p class="ds-technical t-muted">.ds-eyebrow — 0.6875rem / uppercase / 0.28em</p>
+        <p class="ds-eyebrow" style="margin-top:var(--space-3)">Decisão do dia</p>
+      </div>
+      <div data-reveal>
+        <p class="ds-technical t-muted">.ds-lead / .ds-body / .ds-meta</p>
+        <p class="ds-lead" style="margin-top:var(--space-3)">Texto de abertura, com peso de argumento.</p>
+        <p class="ds-body" style="margin-top:var(--space-2)">Texto corrido, para leitura longa e explicação.</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">Metadado de apoio: responsável, etapa, data.</p>
+      </div>
+      <div data-reveal>
+        <p class="ds-technical t-muted">.ds-technical / .ds-numeric-total</p>
+        <p class="ds-technical" style="margin-top:var(--space-3)">MDF 18MM · CORREDIÇA 450MM · R=3</p>
+        <p class="ds-numeric-total" style="margin-top:var(--space-3);font-size:2.5rem">R$ 48.720,00</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= SUPERFÍCIES ======================== -->
+  <section class="doc-section">
+    <p class="ds-eyebrow" data-reveal>04 — Superfícies</p>
+    <h2 class="ds-title" style="margin-top:var(--space-4)" data-split="lines">Quatro níveis com significado.</h2>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      A escolha da superfície não é estética, é semântica. Se você precisa pensar
+      "qual fica mais bonita", está usando a errada.
+    </p>
+
+    <div class="ds-grid md:cols-2 lg:cols-4" style="margin-top:var(--space-8)" data-stagger>
+      <div class="surface-subtle" style="padding:var(--space-5)">
+        <p class="ds-section">.surface-subtle</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">Informação de apoio. Não pede ação.</p>
+      </div>
+      <div class="card" style="padding:var(--space-5)">
+        <p class="ds-section">.card</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">Objeto manipulável: projeto, peça, proposta.</p>
+      </div>
+      <div class="card-raised" style="padding:var(--space-5)">
+        <p class="ds-section">.card-raised</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">Objeto em foco, tirado da pilha.</p>
+      </div>
+      <div class="surface-operational" style="padding:var(--space-5)">
+        <p class="ds-section">.surface-operational</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">A Detalz está calculando algo por você.</p>
+      </div>
+    </div>
+
+    <div class="ds-grid md:cols-2" style="margin-top:var(--space-5)" data-stagger>
+      <div class="ai-overlay-panel" style="padding:var(--space-5)">
+        <p class="ds-section t-mineral">.ai-overlay-panel</p>
+        <p class="ds-body" style="margin-top:var(--space-2)">
+          Toda sugestão da Talez usa esta casca. O usuário precisa reconhecer
+          proposta de máquina sem ler o rótulo.
+        </p>
+      </div>
+      <div class="glass" style="padding:var(--space-5);border-radius:var(--radius-xl)">
+        <p class="ds-section">.glass</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">
+          Cromo flutuante: header condensado, chip sobre cena, menu móvel.
+          Nunca para conteúdo.
+        </p>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Superfície que reage ao ponteiro</h3>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      <code>.card</code> sozinho não reage a nada — é objeto de leitura. Quando o
+      cartão inteiro é clicável, ele precisa dizer isso antes do clique: some
+      <code>.card-interactive</code> para borda e fundo, ou <code>.hover-lift</code>
+      para tirar o objeto do plano. Passe o ponteiro nos dois abaixo.
+    </p>
+
+    <div class="ds-grid md:cols-3" style="margin-top:var(--space-6)" data-stagger>
+      <div class="card" style="padding:var(--space-6)">
+        <p class="ds-section">.card</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">Sem resposta ao ponteiro. Nada aqui é clicável.</p>
+      </div>
+      <a href="#" class="card card-interactive" style="display:block;padding:var(--space-6)" data-cursor="Abrir">
+        <p class="ds-section">.card-interactive</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">Borda firma, fundo acende, sobe 2px em 360ms.</p>
+      </a>
+      <a href="#" class="card hover-lift" style="display:block;padding:var(--space-6)" data-cursor="Abrir">
+        <p class="ds-section">.hover-lift</p>
+        <p class="ds-meta" style="margin-top:var(--space-2)">Sobe 3px e ganha sombra. Para cartão sobre cena.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- =========================== AÇÕES ============================ -->
+  <section class="doc-section">
+    <p class="ds-eyebrow" data-reveal>05 — Ações</p>
+    <h2 class="ds-title" style="margin-top:var(--space-4)" data-split="lines">Uma ação primária por tela.</h2>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      Estado de ponteiro é a parte do sistema que nunca aparece numa captura de
+      tela — e por isso é a que mais divergiu no passado. Aqui os três estados
+      ficam lado a lado, sempre visíveis: as colunas
+      <strong class="t-strong">ponteiro</strong> e
+      <strong class="t-strong">pressionado</strong> usam as classes
+      <code>.is-hover</code> e <code>.is-active</code>, que o próprio CSS do
+      sistema aceita junto de <code>:hover</code> e <code>:active</code>. Não é
+      uma cópia para a documentação: é a mesma regra.
+    </p>
+
+    <div class="matrix" style="margin-top:var(--space-8)" data-reveal>
+      <div class="matrix__head">
+        <span>Classe</span><span>Repouso</span><span>Ponteiro</span><span>Pressionado</span>
+      </div>
+
+      <div class="matrix__row">
+        <code>.btn--primary</code>
+        <span><button class="btn btn--primary">Ver o fluxo
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button></span>
+        <span><button class="btn btn--primary is-hover">Ver o fluxo
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button></span>
+        <span><button class="btn btn--primary is-active">Ver o fluxo
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button></span>
+      </div>
+
+      <div class="matrix__row">
+        <code>.btn--solid</code>
+        <span><button class="btn btn--solid">Sólida</button></span>
+        <span><button class="btn btn--solid is-hover">Sólida</button></span>
+        <span><button class="btn btn--solid is-active">Sólida</button></span>
+      </div>
+
+      <div class="matrix__row">
+        <code>.btn--ghost</code>
+        <span><button class="btn btn--ghost">Fantasma</button></span>
+        <span><button class="btn btn--ghost is-hover">Fantasma</button></span>
+        <span><button class="btn btn--ghost is-active">Fantasma</button></span>
+      </div>
+
+      <div class="matrix__row">
+        <code>.btn--quiet</code>
+        <span><button class="btn btn--quiet">Discreta</button></span>
+        <span><button class="btn btn--quiet is-hover">Discreta</button></span>
+        <span><button class="btn btn--quiet is-active">Discreta</button></span>
+      </div>
+
+      <div class="matrix__row">
+        <code>.link-underline</code>
+        <span><a href="#" class="link-underline">Ver o detalhamento</a></span>
+        <span><a href="#" class="link-underline is-hover">Ver o detalhamento</a></span>
+        <span class="ds-meta">sem estado pressionado</span>
+      </div>
+
+      <div class="matrix__row">
+        <code>.op-row</code>
+        <span><span class="op-row" style="display:flex"><span class="op-row__body"><span class="op-row__title">ML_DET_JANTAR</span></span></span></span>
+        <span><span class="op-row is-hover" style="display:flex"><span class="op-row__body"><span class="op-row__title">ML_DET_JANTAR</span></span></span></span>
+        <span class="ds-meta">sem estado pressionado</span>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Ao vivo</h3>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      A matriz mostra o destino; só o ponteiro mostra a travessia. A seta do botão
+      primário anda 2px em 620ms, o sublinhado se desenha da esquerda, e o toque
+      afunda 2,5%.
+    </p>
+    <div class="demo" style="margin-top:var(--space-5)" data-reveal>
+      <button class="btn btn--primary" data-cursor="Clique">Primária
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+      <button class="btn btn--solid">Sólida</button>
+      <button class="btn btn--ghost">Fantasma</button>
+      <button class="btn btn--quiet">Discreta</button>
+      <a href="#" class="link-underline">Link com sublinhado
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+      </a>
+    </div>
+
+    <p class="ds-meta" style="margin-top:var(--space-4)" data-reveal>
+      Toda ação tem no mínimo <code>2.75rem</code> de altura — alvo de toque em
+      chão de fábrica, com a mão suja e o celular na horizontal. Em ponteiro
+      grosso, <code>.link-underline</code> também recebe essa altura.
+    </p>
+  </section>
+
+  <!-- ======================== DADO E STATUS ======================= -->
+  <section class="doc-section">
+    <p class="ds-eyebrow" data-reveal>06 — Dado e status</p>
+    <h2 class="ds-title" style="margin-top:var(--space-4)" data-split="lines">Status sem motivo é palpite.</h2>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      Um selo vermelho que diz apenas "bloqueado" obriga o usuário a caçar a causa —
+      exatamente o comportamento que a Detalz existe para eliminar. Todo status
+      carrega o motivo no próprio rótulo.
+    </p>
+
+    <div class="ds-grid md:cols-4" style="margin-top:var(--space-8)" data-stagger>
+      <div class="metric">
+        <p class="metric__value"><span data-count="76">0</span></p>
+        <p class="metric__label">Projetos ativos</p>
+      </div>
+      <div class="metric">
+        <p class="metric__value t-danger"><span data-count="2">0</span></p>
+        <p class="metric__label">Bloqueados</p>
+      </div>
+      <div class="metric">
+        <p class="metric__value"><span data-count="18">0</span><span class="metric__unit">mm</span></p>
+        <p class="metric__label">Espessura padrão</p>
+      </div>
+      <div class="metric">
+        <p class="metric__value">0</p>
+        <p class="metric__label">Prazo vencido</p>
+      </div>
+    </div>
+
+    <ul class="ds-stack" style="margin-top:var(--space-8)" data-stagger>
+      <li class="op-row">
+        <div class="op-row__body">
+          <p class="op-row__title">ML_DET_JANTAR</p>
+          <p class="ds-meta">Gate e liberação · Concluir portão de produção</p>
+        </div>
+        <span class="chip chip--danger">11 bloqueios no portão</span>
+      </li>
+      <li class="op-row">
+        <div class="op-row__body">
+          <p class="op-row__title">Casa ML — cozinha</p>
+          <p class="ds-meta">Negociação · Avançar proposta</p>
+        </div>
+        <span class="chip chip--warn">Parado há 32 dias</span>
+      </li>
+    </ul>
+
+    <ol class="timeline" style="margin-top:var(--space-8)" data-stagger>
+      <li class="timeline__item">
+        <div class="ds-row" style="justify-content:space-between">
+          <p class="ds-body" style="font-weight:500">BF4 — Hall de entrada</p>
+          <span class="ds-technical t-muted">hoje</span>
+        </div>
+        <p class="ds-meta">Negociação</p>
+      </li>
+      <li class="timeline__item">
+        <div class="ds-row" style="justify-content:space-between">
+          <p class="ds-body" style="font-weight:500">Smoke Cozinha Teste</p>
+          <span class="ds-technical t-muted">ontem</span>
+        </div>
+        <p class="ds-meta">Gate e liberação</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ========================== MOVIMENTO ========================= -->
+  <section class="doc-section">
+    <p class="ds-eyebrow" data-reveal>07 — Movimento</p>
+    <h2 class="ds-title" style="margin-top:var(--space-4)" data-split="lines">O contrato mora no HTML.</h2>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      Nenhuma animação é escrita à mão numa página. O HTML declara a intenção por
+      atributo e o motor (<code>assets/js/motion.js</code>) resolve. Cada caixa
+      abaixo tem a primitiva rodando de verdade e um botão para repetir — porque
+      animação de entrada dispara uma vez por carregamento, e documentação que só
+      pode ser vista uma vez não documenta nada.
+    </p>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Curvas</h3>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      Quatro curvas para o sistema todo. As pistas abaixo usam a variável real —
+      <code>transition: transform var(--dur-cinema) var(--ease-out)</code> — então
+      o que você vê é o token, não uma reprodução dele.
+    </p>
+
+    <div class="lab" style="margin-top:var(--space-6)">
+      <div class="lab__head">
+        <span class="ds-technical">Curvas de saída · mesma distância, mesma duração</span>
+        <button type="button" class="lab__replay" data-run-tracks>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+          Repetir
+        </button>
+      </div>
+      <div class="lab__stage" style="display:grid;gap:var(--space-4);place-items:stretch">
+        <div>
+          <p class="ds-technical t-muted" style="margin-bottom:var(--space-2)">--ease-out · cubic-bezier(.16, 1, .30, 1) — padrão de entrada</p>
+          <div class="track track--out"><span class="track__runner"></span></div>
+        </div>
+        <div>
+          <p class="ds-technical t-muted" style="margin-bottom:var(--space-2)">--ease-inout · cubic-bezier(.76, 0, .24, 1) — troca de estado</p>
+          <div class="track track--inout"><span class="track__runner"></span></div>
+        </div>
+        <div>
+          <p class="ds-technical t-muted" style="margin-bottom:var(--space-2)">--ease-entry · cubic-bezier(.22, 1, .36, 1) — entrada de conteúdo</p>
+          <div class="track track--entry"><span class="track__runner"></span></div>
+        </div>
+        <div>
+          <p class="ds-technical t-muted" style="margin-bottom:var(--space-2)">--ease-snap · cubic-bezier(.34, 1.56, .64, 1) — micro-feedback, passa e volta</p>
+          <div class="track track--snap"><span class="track__runner"></span></div>
+        </div>
+        <div>
+          <p class="ds-technical t-muted" style="margin-bottom:var(--space-2)">linear — só para movimento contínuo (marquee, parallax). Em entrada, parece defeito.</p>
+          <div class="track track--linear"><span class="track__runner"></span></div>
+        </div>
+      </div>
+      <p class="lab__note ds-meta">
+        A diferença entre <code>--ease-out</code> e <code>linear</code> é o que
+        separa "o elemento chegou" de "o elemento foi arrastado".
+      </p>
+    </div>
+
+    <div class="lab" style="margin-top:var(--space-5)">
+      <div class="lab__head">
+        <span class="ds-technical">Durações</span>
+        <button type="button" class="lab__replay" data-run-durs>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+          Repetir
+        </button>
+      </div>
+      <div class="lab__stage" style="display:grid;gap:var(--space-4);place-items:stretch">
+        <div class="dur dur--fast"><p class="ds-technical t-muted">--dur-fast · 200ms — resposta a toque</p><div class="dur__rail"><div class="dur__bar"></div></div></div>
+        <div class="dur dur--base"><p class="ds-technical t-muted">--dur-base · 360ms — hover, troca de cor</p><div class="dur__rail"><div class="dur__bar"></div></div></div>
+        <div class="dur dur--slow"><p class="ds-technical t-muted">--dur-slow · 620ms — sublinhado, ícone, header</p><div class="dur__rail"><div class="dur__bar"></div></div></div>
+        <div class="dur dur--reveal"><p class="ds-technical t-muted">--dur-reveal · 1100ms — entrada de conteúdo</p><div class="dur__rail"><div class="dur__bar"></div></div></div>
+        <div class="dur dur--cinema"><p class="ds-technical t-muted">--dur-cinema · 1600ms — set-piece</p><div class="dur__rail"><div class="dur__bar"></div></div></div>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Primitivas de entrada</h3>
+
+    <div class="ds-grid md:cols-2" style="margin-top:var(--space-6)">
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-reveal</code>
+          <button type="button" class="lab__replay" data-replay>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            Repetir
+          </button>
+        </div>
+        <div class="lab__stage">
+          <p class="ds-heading" data-reveal>Sobe 24px e aparece.</p>
+        </div>
+        <p class="lab__note ds-meta">1000ms · expo.out · dispara a 90% da tela. Aceita atraso: <code>data-reveal="0.2"</code>.</p>
+      </div>
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-split="lines"</code>
+          <button type="button" class="lab__replay" data-replay>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            Repetir
+          </button>
+        </div>
+        <div class="lab__stage">
+          <p class="ds-heading" data-split="lines">Cada linha sai de dentro da própria máscara, uma atrás da outra.</p>
+        </div>
+        <p class="lab__note ds-meta">1250ms · stagger 80ms. As linhas são medidas no layout real, então a quebra respeita a largura.</p>
+      </div>
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-stagger</code>
+          <button type="button" class="lab__replay" data-replay>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            Repetir
+          </button>
+        </div>
+        <div class="lab__stage">
+          <div class="ds-row" data-stagger>
+            <span class="chip chip--outline">Medida</span>
+            <span class="chip chip--outline">Material</span>
+            <span class="chip chip--outline">Espessura</span>
+            <span class="chip chip--outline">Ferragem</span>
+            <span class="chip chip--mineral">Custo</span>
+          </div>
+        </div>
+        <p class="lab__note ds-meta">Os filhos diretos entram em cascata · 950ms · 70ms entre cada. Nada a declarar nos filhos.</p>
+      </div>
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-clip</code>
+          <button type="button" class="lab__replay" data-replay>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            Repetir
+          </button>
+        </div>
+        <div class="lab__stage">
+          <div class="card" style="position:relative;width:100%;aspect-ratio:16/7;overflow:hidden" data-clip>
+            <div class="ambient-field-strong" style="position:absolute;inset:0"></div>
+            <div class="tech-grid"></div>
+            <span class="ds-numeric-total" style="position:absolute;inset:0;display:grid;place-items:center;font-size:2rem;opacity:.25">PROJETO</span>
+          </div>
+        </div>
+        <p class="lab__note ds-meta">Revela por <code>clip-path</code>, de baixo para cima · 1500ms. Para imagem e cena — nunca para texto corrido.</p>
+      </div>
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-line</code>
+          <button type="button" class="lab__replay" data-replay>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            Repetir
+          </button>
+        </div>
+        <div class="lab__stage" style="place-items:stretch;align-content:center;gap:var(--space-5)">
+          <span class="ds-rule" data-line style="display:block;height:1px;background:var(--border)"></span>
+          <span class="ds-rule" data-line style="display:block;height:1px;background:var(--mineral)"></span>
+        </div>
+        <p class="lab__note ds-meta">Régua que se desenha da esquerda · <code>scaleX</code> 0→1 · 1600ms. É o separador de seção da landing.</p>
+      </div>
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-parallax="10"</code>
+          <span class="ds-micro t-muted">rolagem</span>
+        </div>
+        <div class="lab__stage" style="overflow:hidden;position:relative;min-height:11rem">
+          <div class="ambient-field-strong" style="position:absolute;inset:-20% 0" data-parallax="10"></div>
+          <span class="ds-technical" style="position:relative">o fundo anda menos que a página</span>
+        </div>
+        <p class="lab__note ds-meta">Preso à rolagem, em %, dentro do próprio quadro. Não tem botão de repetir: o estado é a posição da página, não um tempo.</p>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Texto vivo</h3>
+
+    <div class="ds-grid md:cols-2" style="margin-top:var(--space-6)">
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-type</code>
+          <button type="button" class="lab__replay" data-replay>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            Repetir
+          </button>
+        </div>
+        <div class="lab__stage lab__stage--left">
+          <p class="ds-technical t-mineral" data-type>Lendo o projeto · estruturando o orçamento</p>
+        </div>
+        <p class="lab__note ds-meta">Uma cópia invisível do texto final segura a caixa, então nada abaixo pula enquanto digita. O cursor pisca só durante a escrita.</p>
+      </div>
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <span><code>data-count</code> · <code>data-num</code></span>
+          <button type="button" class="lab__replay" data-replay>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            Repetir
+          </button>
+        </div>
+        <div class="lab__stage">
+          <div class="ds-row" style="gap:var(--space-8);justify-content:center">
+            <span>
+              <span class="ds-numeric-total" style="font-size:2.5rem" data-count="70" data-suffix="%">0%</span>
+              <span class="ds-micro" style="display:block">data-count · sufixo</span>
+            </span>
+            <span>
+              <span class="ds-numeric-total" style="font-size:2.5rem" data-num>04</span>
+              <span class="ds-micro" style="display:block">data-num · zero à esquerda</span>
+            </span>
+            <span>
+              <span class="ds-numeric-total" style="font-size:2.5rem" data-count="1.8" data-decimals="1" data-suffix=" mm">0</span>
+              <span class="ds-micro" style="display:block">data-decimals · vírgula</span>
+            </span>
+          </div>
+        </div>
+        <p class="lab__note ds-meta">Número com <code>tabular-nums</code>: a caixa não muda de largura enquanto conta. Decimal sai com vírgula.</p>
+      </div>
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-words</code>
+          <button type="button" class="lab__replay" data-replay>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            Repetir
+          </button>
+        </div>
+        <div class="lab__stage lab__stage--left">
+          <p class="ds-heading" data-words>Palavra por palavra, quase junto — 14ms entre cada.</p>
+        </div>
+        <p class="lab__note ds-meta">Mais miúdo que <code>data-split</code>. Use quando a frase é curta e precisa de textura, não de peso.</p>
+      </div>
+
+      <div class="lab" data-lab>
+        <div class="lab__head">
+          <code>data-scrub-words</code>
+          <span class="ds-micro t-muted">rolagem</span>
+        </div>
+        <div class="lab__stage lab__stage--left">
+          <p class="ds-heading" data-scrub-words>
+            O manifesto acende conforme a página rola: cada palavra sai de 14% para 100% de opacidade, e a leitura vira o próprio gesto de descer.
+          </p>
+        </div>
+        <p class="lab__note ds-meta">Preso à rolagem com <code>scrub: 0.6</code>. Reservado para o argumento central de uma seção — se usado duas vezes, perde o efeito.</p>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Contínuas</h3>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      Movimento que não termina. Só se justifica quando comunica "isto está
+      acontecendo agora" — dado em trânsito, processo vivo, fila andando.
+    </p>
+
+    <div class="lab" style="margin-top:var(--space-6)">
+      <div class="lab__head"><code>data-marquee data-speed="-0.5" data-velocity</code><span class="ds-micro t-muted">contínuo</span></div>
+      <div style="padding-block:var(--space-6)">
+        <div class="marquee edge-fade" data-marquee data-speed="-0.5" data-velocity>
+          <div class="marquee-row">
+            <span>Medida</span><span class="sep">◆</span>
+            <span>Material</span><span class="sep">◆</span>
+            <span>Espessura</span><span class="sep">◆</span>
+            <span>Ferragem</span><span class="sep">◆</span>
+            <span>Usinagem</span><span class="sep">◆</span>
+            <span>Fita de borda</span><span class="sep">◆</span>
+          </div>
+          <div class="marquee-row" aria-hidden="true">
+            <span>Medida</span><span class="sep">◆</span>
+            <span>Material</span><span class="sep">◆</span>
+            <span>Espessura</span><span class="sep">◆</span>
+            <span>Ferragem</span><span class="sep">◆</span>
+            <span>Usinagem</span><span class="sep">◆</span>
+            <span>Fita de borda</span><span class="sep">◆</span>
+          </div>
+        </div>
+      </div>
+      <p class="lab__note ds-meta">
+        Role a página e olhe a faixa: com <code>data-velocity</code> ela acelera na
+        direção da rolagem e desacelera quando você para. O conteúdo é duplicado no
+        HTML — a segunda cópia é <code>aria-hidden</code> para o leitor de tela não
+        ouvir a lista duas vezes.
+      </p>
+    </div>
+
+    <div class="ds-grid md:cols-3" style="margin-top:var(--space-5)" data-stagger>
+      <div class="lab">
+        <div class="lab__head"><code>.pulse-dot</code></div>
+        <div class="lab__stage">
+          <span class="ds-row" style="gap:var(--space-3)">
+            <span class="dot pulse-dot"></span>
+            <span class="ds-technical">ao vivo</span>
+          </span>
+        </div>
+        <p class="lab__note ds-meta">Anel que expande e apaga · 2,6s. Só para dado que atualiza sozinho.</p>
+      </div>
+
+      <div class="lab">
+        <div class="lab__head"><code>.flow-wire</code></div>
+        <div class="lab__stage">
+          <svg viewBox="0 0 200 40" width="100%" height="40" fill="none" aria-hidden="true">
+            <path d="M4 20 C 60 20 60 8 100 8 C 140 8 140 32 196 32" stroke="var(--border)" stroke-width="1.5"/>
+            <path class="flow-wire" d="M4 20 C 60 20 60 8 100 8 C 140 8 140 32 196 32" stroke="var(--mineral)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <p class="lab__note ds-meta">Tracejado que corre pela aresta · 1,4s. É "o detalhe seguindo o caminho".</p>
+      </div>
+
+      <div class="lab">
+        <div class="lab__head"><code>.caret.is-live</code></div>
+        <div class="lab__stage">
+          <span class="ds-technical">estruturando<span class="caret is-live"></span></span>
+        </div>
+        <p class="lab__note ds-meta">Piscar em <code>steps(1)</code> · 0,9s. Sai de cena quando a escrita termina.</p>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Ponteiro</h3>
+    <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:62ch" data-reveal>
+      O cursor da página já não é o do sistema operacional: é um anel que segue com
+      atraso e um ponto que segue quase colado. Em ponteiro grosso ele não existe —
+      <code>@media (hover: none)</code> o remove por completo.
+    </p>
+
+    <div class="ds-grid md:cols-3" style="margin-top:var(--space-6)" data-stagger>
+      <div class="lab">
+        <div class="lab__head"><code>data-magnetic</code></div>
+        <div class="lab__stage">
+          <button class="btn btn--primary" data-magnetic data-cursor="Puxa">Aproxime o ponteiro</button>
+        </div>
+        <p class="lab__note ds-meta">O alvo vem até o ponteiro · 0,32x na horizontal, 0,42y na vertical. Só para a ação principal de uma seção.</p>
+      </div>
+
+      <div class="lab">
+        <div class="lab__head"><code>data-cursor="Abrir"</code></div>
+        <div class="lab__stage">
+          <a href="#" class="card card-interactive" style="display:grid;place-items:center;width:100%;min-height:5rem" data-cursor="Abrir">
+            <span class="ds-technical t-muted">passe por cima</span>
+          </a>
+        </div>
+        <p class="lab__note ds-meta">O anel cresce e recebe o rótulo dentro dele. O texto vira o verbo da ação — nunca o nome do objeto.</p>
+      </div>
+
+      <div class="lab">
+        <div class="lab__head"><code>anel + ponto</code></div>
+        <div class="lab__stage">
+          <p class="ds-meta" style="text-align:center">
+            Anel: 550ms de atraso.<br>Ponto: 120ms.<br>
+            <span class="ds-technical t-mineral">mix-blend-mode: difference</span>
+          </p>
+        </div>
+        <p class="lab__note ds-meta">A diferença de atraso entre os dois é o que dá a sensação de peso. Iguais, o efeito desaparece.</p>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Estado e set-pieces</h3>
+
+    <div class="lab" style="margin-top:var(--space-6)">
+      <div class="lab__head"><code>.faq-item.is-open</code><span class="ds-micro t-muted">clique</span></div>
+      <div style="padding:0 var(--space-5)">
+        <div class="faq-list" style="border-block:0">
+          <div class="faq-item is-open">
+            <button type="button" class="faq-head" aria-expanded="true">
+              <span class="ds-heading" style="font-size:1.0625rem">A altura é animada, não trocada</span>
+              <span class="faq-toggle" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </span>
+            </button>
+            <div class="faq-body"><div>
+              O corpo vai de 0 até a altura real do conteúdo em 500ms, e no fim
+              recebe <code>height: auto</code> — sem isso, o texto ficaria cortado
+              quando a janela mudasse de largura. O <code>+</code> gira 135° e vira
+              <code>×</code>: um símbolo, dois estados.
+            </div></div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-head" aria-expanded="false">
+              <span class="ds-heading" style="font-size:1.0625rem">Abrir um fecha o outro</span>
+              <span class="faq-toggle" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </span>
+            </button>
+            <div class="faq-body"><div>
+              Só uma resposta fica aberta por vez, e cada abertura remede os
+              gatilhos de rolagem — a página cresceu, então as distâncias mudaram.
+            </div></div>
+          </div>
+        </div>
+      </div>
+      <p class="lab__note ds-meta">Passe o ponteiro no cabeçalho: o botão redondo ganha borda mineral antes do clique.</p>
+    </div>
+
+    <div class="lab" style="margin-top:var(--space-5)">
+      <div class="lab__head"><code>data-stack-card</code><span class="ds-micro t-muted">rolagem</span></div>
+      <div style="padding:var(--space-5)">
+        <p class="ds-meta" style="margin-bottom:var(--space-5)">
+          Cada cartão é <code>sticky</code>; quando o próximo sobe, o de baixo
+          encolhe para 92% e escurece para 70% de brilho. Não é enfeite: é o que
+          diz "esta etapa continua existindo debaixo da seguinte".
+        </p>
+        <div>
+          <article class="stack-card" data-stack-card style="position:sticky;top:8vh;margin-bottom:var(--space-4)">
+            <div class="stack-card__inner" style="grid-template-columns:minmax(0,1fr)">
+              <div class="stack-card__body" style="padding:var(--space-6);gap:var(--space-4)">
+                <span class="chip chip--outline" style="width:fit-content">01</span>
+                <h4 class="ds-heading" style="font-size:1.25rem">Projeto</h4>
+              </div>
+            </div>
+          </article>
+          <article class="stack-card" data-stack-card style="position:sticky;top:10vh;margin-bottom:var(--space-4)">
+            <div class="stack-card__inner" style="grid-template-columns:minmax(0,1fr)">
+              <div class="stack-card__body" style="padding:var(--space-6);gap:var(--space-4)">
+                <span class="chip chip--outline" style="width:fit-content">02</span>
+                <h4 class="ds-heading" style="font-size:1.25rem">Orçamento</h4>
+              </div>
+            </div>
+          </article>
+          <article class="stack-card" data-stack-card style="position:sticky;top:12vh;margin-bottom:0">
+            <div class="stack-card__inner" style="grid-template-columns:minmax(0,1fr);border-color:var(--mineral-line)">
+              <div class="stack-card__body" style="padding:var(--space-6);gap:var(--space-4)">
+                <span class="chip chip--mineral" style="width:fit-content">03 · Portão</span>
+                <h4 class="ds-heading" style="font-size:1.25rem">Produção</h4>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="ds-section" style="margin-top:var(--space-12)" data-reveal>Degradação</h3>
+    <div class="ds-grid md:cols-2" style="margin-top:var(--space-5)" data-stagger>
+      <div class="card" style="padding:var(--space-6)">
+        <p class="ds-section">Sem JS, sem GSAP</p>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Os estados escondidos em <code>motion.css</code> só valem sob
+          <code>.js</code>. Se o script não carregar, a classe nunca entra e a
+          página nasce inteira e legível — nunca em branco.
+        </p>
+      </div>
+      <div class="card" style="padding:var(--space-6)">
+        <p class="ds-section">prefers-reduced-motion</p>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          O motor sai antes de criar qualquer gatilho, remove preloader, grão e
+          cursor, e entrega a mesma página de uma vez. Não é uma versão pobre: é a
+          mesma informação sem a travessia.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== PRINCÍPIOS ======================== -->
+  <section class="doc-section" style="padding-bottom:var(--space-24)">
+    <p class="ds-eyebrow" data-reveal>08 — Princípios</p>
+    <h2 class="ds-title" style="margin-top:var(--space-4)" data-split="lines">Quando houver dúvida.</h2>
+
+    <div class="ds-grid md:cols-2" style="margin-top:var(--space-8)" data-stagger>
+      <div class="card" style="padding:var(--space-6)">
+        <p class="ds-section">O motivo vem junto</p>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Nenhum estado, bloqueio ou sugestão aparece sem a razão dele. Obrigar o
+          usuário a procurar a causa é reproduzir o problema que a plataforma existe
+          para resolver.
+        </p>
+      </div>
+      <div class="card" style="padding:var(--space-6)">
+        <p class="ds-section">A máquina propõe, a pessoa decide</p>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Saída de IA nunca se disfarça de dado confirmado. Casca própria, verbo de
+          sugestão e uma ação humana explícita entre a proposta e o efeito.
+        </p>
+      </div>
+      <div class="card" style="padding:var(--space-6)">
+        <p class="ds-section">Dado técnico em mono</p>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Medida, espessura, código e custo são fatos verificáveis. A troca de voz
+          tipográfica avisa o leitor disso antes de ele terminar de ler.
+        </p>
+      </div>
+      <div class="card" style="padding:var(--space-6)">
+        <p class="ds-section">Movimento é orientação, não enfeite</p>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Cada animação responde a "onde eu estou" ou "o que mudou". Se remover a
+          animação não deixa o usuário mais perdido, ela não deveria existir.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="assets/js/motion.js"></script>
+
+<script>
+/* Controles da página de documentação. Nada aqui pertence ao design system. */
+
+document.querySelectorAll('.theme-toggle button').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var theme = btn.dataset.theme;
+    document.documentElement.setAttribute('data-surface', theme);
+    document.body.setAttribute('data-surface', theme);
+    document.querySelectorAll('.theme-toggle button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+  });
+});
+
+/* Repetir a primitiva da caixa. O motor expõe `Detalz.replay` justamente para
+   isto; sem GSAP o botão simplesmente não faz nada, e a caixa continua legível. */
+document.querySelectorAll('[data-replay]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var lab = btn.closest('[data-lab]');
+    if (lab && window.Detalz && window.Detalz.replay) window.Detalz.replay(lab);
+  });
+});
+
+/* As pistas de easing e as barras de duração são CSS puro: a classe entra, a
+   transição roda. Um quadro sem a classe é obrigatório entre duas execuções,
+   senão o navegador não tem de onde interpolar. */
+function rerun(nodes) {
+  nodes.forEach(function (n) { n.classList.remove('is-running'); });
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      nodes.forEach(function (n) { n.classList.add('is-running'); });
+    });
+  });
+}
+
+var tracks = Array.prototype.slice.call(document.querySelectorAll('.track'));
+var durs = Array.prototype.slice.call(document.querySelectorAll('.dur'));
+
+document.querySelector('[data-run-tracks]').addEventListener('click', function () { rerun(tracks); });
+document.querySelector('[data-run-durs]').addEventListener('click', function () { rerun(durs); });
+
+/* Roda uma vez quando as demonstrações entram na tela, para quem só passa
+   rolando ver o efeito sem precisar clicar. */
+if (window.IntersectionObserver) {
+  var seen = new WeakSet();
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting || seen.has(e.target)) return;
+      seen.add(e.target);
+      rerun(e.target.classList.contains('track') ? tracks : durs);
+    });
+  }, { threshold: 0.6 });
+  if (tracks[0]) io.observe(tracks[0]);
+  if (durs[0]) io.observe(durs[0]);
+}
+</script>
+</body>
+</html>
