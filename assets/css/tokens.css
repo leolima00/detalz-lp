@@ -112,7 +112,7 @@
   --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Escala fluida — clamp(min, preferido, max) */
-  --text-hero:      clamp(2.75rem, 9.2vw, 7rem);
+  --text-hero:      clamp(2.5rem, 8vw, 6rem);
   --text-display:   clamp(2.25rem, 6vw, 4.5rem);
   --text-title:     clamp(1.75rem, 3.6vw, 3rem);
   --text-heading:   clamp(1.375rem, 2.2vw, 1.875rem);

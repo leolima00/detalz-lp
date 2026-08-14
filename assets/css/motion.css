@@ -15,7 +15,11 @@
 .js [data-reveal],
 .js [data-fade],
 .js [data-stagger] > *,
-.js [data-story] { opacity: 0; }
+.js [data-story],
+.js [data-hero-el],
+.js [data-hero-title],
+.js [data-hero-field],
+.js .site-header { opacity: 0; }
 
 .js [data-clip] { clip-path: inset(0 0 100% 0); }
 
@@ -123,7 +127,11 @@
   .js [data-reveal],
   .js [data-fade],
   .js [data-stagger] > *,
-  .js [data-story] { opacity: 1 !important; }
+  .js [data-story],
+  .js [data-hero-el],
+  .js [data-hero-title],
+  .js [data-hero-field],
+  .js .site-header { opacity: 1 !important; }
 
   .js [data-clip] { clip-path: none !important; }
   .js [data-line] { transform: none !important; }

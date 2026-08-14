@@ -139,6 +139,19 @@
 
   gsap.registerPlugin(ScrollTrigger);
   gsap.config({ nullTargetWarn: false });
+  // O refresh automático no `load` dispara quando as imagens da página
+  // terminam — em geral já com o herói visível — e o fromTo volta ao
+  // estado inicial por um frame. Medimos de novo nós, ainda cobertos.
+  ScrollTrigger.config({ autoRefreshEvents: 'visibilitychange,resize' });
+  // O pin grava width em px. Se a primeira medida foi sem a barra vertical,
+  // esse número fica 15px maior que a área útil e a página rola para o lado.
+  // Limpamos antes de cada recálculo para o GSAP medir o clientWidth atual.
+  ScrollTrigger.addEventListener('refreshInit', function () {
+    document.querySelectorAll('.pin-spacer, #hScroll, #flowPin').forEach(function (el) {
+      el.style.removeProperty('width');
+      el.style.removeProperty('max-width');
+    });
+  });
 
   var EASE = 'expo.out';
   var isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
@@ -155,9 +168,19 @@
   });
 
   lenis.on('scroll', ScrollTrigger.update);
+  function fitScrollPins() {
+    var w = document.documentElement.clientWidth + 'px';
+    document.querySelectorAll('#hScroll, #flowPin, .pin-spacer').forEach(function (el) {
+      el.style.setProperty('width', w, 'important');
+      el.style.setProperty('max-width', w, 'important');
+    });
+  }
   // Pins alteram a altura do documento depois que o Lenis já cacheou o limite;
   // sem isso, âncoras profundas param antes do alvo.
-  ScrollTrigger.addEventListener('refresh', function () { lenis.resize(); });
+  ScrollTrigger.addEventListener('refresh', function () {
+    fitScrollPins();
+    lenis.resize();
+  });
   gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
   gsap.ticker.lagSmoothing(0);
   lenis.stop();
@@ -242,7 +265,8 @@
     });
 
     el.dataset.splitDone = '1';
-    el.style.opacity = '1';
+    // Não forçar opacity aqui: o herói precisa continuar escondido até o
+    // gsap.set das linhas; os demais splits o fromTo do ScrollTrigger cobre.
     return inners;
   }
 
@@ -260,6 +284,8 @@
       if (pre && pre.parentNode) pre.remove();
       if (panel && panel.parentNode) panel.remove();
     }
+
+    prepareHero();
 
     if (!pre) { revealHero(); return; }
 
@@ -290,7 +316,7 @@
 
     if (nodes[0]) nodes[0].classList.add('is-on');
 
-    gsap.timeline({ onComplete: revealHero })
+    gsap.timeline()
       .to(counter, {
         v: 100,
         duration: 2.2,
@@ -308,10 +334,18 @@
           }
         },
       })
+      .add(function () { ScrollTrigger.refresh(); })
       .to('#dz-preloader [data-pl-el]', { opacity: 0, y: -8, duration: 0.35, ease: 'power2.in' }, '+=0.18')
       .to(pre, { yPercent: -100, duration: 0.9, ease: 'expo.inOut' }, '-=0.1')
-      .to(panel, { scaleY: 0, transformOrigin: 'top center', duration: 1.0, ease: 'expo.inOut' }, '-=0.75')
-      .add(clearChrome, '>-0.05');
+      .add(function () {
+        document.documentElement.classList.remove('is-loading');
+        revealHero();
+      }, '<')
+      .to(panel, { scaleY: 0, transformOrigin: 'top center', duration: 1.0, ease: 'expo.inOut' }, '<+=0.15')
+      .add(function () {
+        if (pre && pre.parentNode) pre.remove();
+        if (panel && panel.parentNode) panel.remove();
+      });
   }
 
   /* ======================================================================
@@ -319,27 +353,51 @@
      ====================================================================== */
 
   var heroRevealed = false;
+  var heroPrepared = false;
+  var heroLines = [];
+
+  // Estados iniciais aplicados ainda sob o preloader. Sem isso o fromTo do
+  // herói esconde o conteúdo no primeiro frame depois da cortina — a piscada.
+  function prepareHero() {
+    if (heroPrepared) return heroLines;
+    heroPrepared = true;
+    var h1 = document.querySelector('[data-hero-title]');
+    heroLines = h1 ? splitLines(h1) : [];
+    gsap.set('[data-hero-field]', { scale: 1.25, opacity: 0 });
+    gsap.set('[data-hero-rule]', { scaleX: 0 });
+    gsap.set(heroLines, { y: 0, yPercent: 118 });
+    if (h1) gsap.set(h1, { opacity: 1 });
+    gsap.set('[data-hero-el]', { y: 26, opacity: 0 });
+    gsap.set('.site-header', { y: -28, opacity: 0 });
+    return heroLines;
+  }
 
   function revealHero() {
     if (heroRevealed) return;
     heroRevealed = true;
+    prepareHero();
     lenis.start();
 
-    var h1 = document.querySelector('[data-hero-title]');
-    var lines = h1 ? splitLines(h1) : [];
+    var lines = document.querySelectorAll('[data-hero-title] .line-inner');
+    if (!lines.length) lines = heroLines;
 
-    gsap.timeline()
-      .fromTo('[data-hero-field]', { scale: 1.25, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.9, ease: 'expo.out' }, 0)
-      .fromTo('[data-hero-rule]', { scaleX: 0 }, { scaleX: 1, duration: 1.0, ease: EASE }, 0.2)
-      .fromTo(lines, { yPercent: 118 }, { yPercent: 0, duration: 1.35, ease: EASE, stagger: 0.09 }, 0.28)
-      .fromTo('[data-hero-el]', { y: 26, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.0, ease: EASE, stagger: 0.08 }, 0.55)
-      .fromTo('.site-header', { y: -28, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.0, ease: EASE }, 0.4);
+    // `lenis.stop()` aplica overflow:hidden no html e some com a barra.
+    // Só depois de `start()` a área útil é a real — e os pins cabem nela.
+    gsap.delayedCall(0.08, function () {
+      ScrollTrigger.refresh();
+      fitScrollPins();
+    });
+
+    gsap.timeline({ onComplete: heroScroll })
+      .to('[data-hero-field]', { scale: 1, opacity: 1, duration: 1.9, ease: 'expo.out', overwrite: true }, 0)
+      .to('[data-hero-rule]', { scaleX: 1, duration: 1.0, ease: EASE, overwrite: true }, 0.2)
+      .fromTo(lines, { y: 0, yPercent: 118 }, {
+        y: 0, yPercent: 0, duration: 1.35, ease: EASE, stagger: 0.09, overwrite: true,
+      }, 0.28)
+      .to('[data-hero-el]', { y: 0, opacity: 1, duration: 1.0, ease: EASE, stagger: 0.08, overwrite: true }, 0.55)
+      .to('.site-header', { y: 0, opacity: 1, duration: 1.0, ease: EASE, overwrite: true }, 0.4);
 
     gsap.to('[data-scroll-arrow]', { y: 5, duration: 0.9, ease: 'sine.inOut', repeat: -1, yoyo: true });
-    ScrollTrigger.refresh();
   }
 
   function heroScroll() {
@@ -483,6 +541,7 @@
   function reveals() {
     document.querySelectorAll('[data-split="lines"]').forEach(function (el) {
       var lines = splitLines(el);
+      gsap.set(el, { opacity: 1 });
       gsap.fromTo(lines, { yPercent: 112 }, {
         yPercent: 0, duration: 1.25, ease: EASE, stagger: 0.08,
         scrollTrigger: { trigger: triggerFor(el), start: 'top 88%' },
@@ -746,7 +805,9 @@
 
     var bar = section.querySelector('.hscroll__bar span');
 
-    function distance() { return Math.max(0, track.scrollWidth - window.innerWidth); }
+    function distance() {
+      return Math.max(0, track.scrollWidth - document.documentElement.clientWidth);
+    }
 
     gsap.to(track, {
       x: function () { return -distance(); },
@@ -853,6 +914,7 @@
         pin: true,
         scrub: 0.7,
         anticipatePin: 1,
+        invalidateOnRefresh: true,
         refreshPriority: 1,
         onUpdate: function (self) { update(self.progress); },
       },
@@ -978,7 +1040,7 @@
 
   whenReady(function () {
     window.scrollTo(0, 0);
-    heroScroll();
+    prepareHero();
     header();
     cursor();
     reveals();
@@ -999,10 +1061,14 @@
     ScrollTrigger.refresh();
     preload();
 
-    // O layout ainda assenta depois do boot (altura do FAQ aberto, métrica
-    // final da fonte). Sem esta segunda medição os pins ficam dezenas de px
-    // fora e as seções seguintes disparam cedo.
-    if (document.readyState === 'complete') gsap.delayedCall(0.6, ScrollTrigger.refresh);
-    else window.addEventListener('load', function () { gsap.delayedCall(0.4, ScrollTrigger.refresh); });
+    // Segunda medição só enquanto o preloader ainda cobre. Depois da
+    // entrada do herói, um refresh rebobina fromTo visíveis e pisca.
+    function refreshWhileCovered() {
+      if (!heroRevealed && document.getElementById('dz-preloader')) {
+        ScrollTrigger.refresh();
+      }
+    }
+    if (document.readyState === 'complete') gsap.delayedCall(0.6, refreshWhileCovered);
+    else window.addEventListener('load', function () { gsap.delayedCall(0.4, refreshWhileCovered); });
   });
 })();

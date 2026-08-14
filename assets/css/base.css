@@ -19,10 +19,15 @@ html {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   background: var(--dz-graphite-1000);
+  /* No root, `hidden` (não `clip`) é o que impede a barra horizontal: o
+     viewport ignora `clip` e ainda deixa deslocar 15px. Os pins continuam
+     presos a este scroller — o que quebra pin é overflow em ancestral. */
+  overflow-x: hidden;
 }
 
 body {
   min-height: 100svh;
+  max-width: 100%;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
@@ -74,7 +79,8 @@ html.is-loading body { overflow: hidden; }
 
 html.is-loading #dz-progress,
 html.is-loading #dz-grain,
-html.is-loading .site-header { visibility: hidden; }
+html.is-loading .site-header,
+html.is-loading .hero > * { visibility: hidden; }
 
 /* --------------------------------------------------------------------------
    TROCA DE SUPERFÍCIE
@@ -282,4 +288,12 @@ html.is-loading .site-header { visibility: hidden; }
   clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ScrollTrigger mede os pins com o preloader em overflow:hidden — sem barra
+   vertical, a largura sai igual a 100vw. Quando a barra volta, esses spacers
+   (e o elemento pinado) ficam ~15px maiores que a área útil. */
+.pin-spacer,
+.pin-spacer > * {
+  max-width: 100% !important;
 }
