@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-surface="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalz para Indústrias | Sua rede orçando em minutos</title>
+<meta name="description" content="Estruturamos a biblioteca, a engenharia e a tabela da sua indústria para que cada lojista orce em minutos, com o seu preço e o seu padrão.">
+<meta name="theme-color" content="#060708">
+<link rel="canonical" href="https://www.detalz.com.br/para-industrias/">
+
+<link rel="icon" href="../assets/brand/favicon.png" type="image/png" sizes="512x512">
+<link rel="icon" href="../assets/brand/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
+
+<meta property="og:title" content="Detalz para Indústrias | Sua rede orçando em minutos">
+<meta property="og:description" content="Estruturamos a biblioteca, a engenharia e a tabela da sua indústria para que cada lojista orce em minutos, com o seu preço e o seu padrão.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.detalz.com.br/para-industrias/">
+<meta property="og:image" content="../assets/brand/og-detalz.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="../assets/brand/og-detalz.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/motion.css">
+
+<script>
+document.documentElement.classList.add('js', 'is-loading');
+// A página tem preloader e seções fixadas: as distâncias de pin são medidas no
+// boot. Se o navegador restaurar a rolagem antes disso, toda medida sai errada.
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+</script>
+</head>
+
+<body>
+
+<!-- ============================ PRELOADER ============================ -->
+<div id="dz-preloader" aria-busy="true" aria-live="polite">
+  <div class="pl-inner">
+    <span class="brand-logo pl-logo" data-pl-el role="img" aria-label="Detalz"></span>
+
+    <div class="pl-path" data-pl-el>
+      <span class="pl-path__track"></span>
+      <span class="pl-path__fill" id="plFill"></span>
+      <span class="pl-packet" id="plPacket"></span>
+      <span class="pl-node is-on" data-pl-node style="left:0%"></span>
+      <span class="pl-node" data-pl-node style="left:33.333%"></span>
+      <span class="pl-node" data-pl-node style="left:66.666%"></span>
+      <span class="pl-node" data-pl-node style="left:100%"></span>
+    </div>
+
+    <div class="pl-meta" data-pl-el>
+      <span class="ds-eyebrow" id="plWord">Abrindo a plataforma</span>
+      <span class="ds-technical"><span id="plNum">00</span>%</span>
+    </div>
+  </div>
+</div>
+<div class="pl-panel" id="pl-panel"></div>
+
+<!-- ============================== CROMO ============================== -->
+<div id="dz-progress"></div>
+<div id="dz-grain"></div>
+<div id="dz-cursor"><span class="cursor-label"></span></div>
+<div id="dz-cursor-dot"></div>
+
+<!-- ============================= HEADER ============================== -->
+<header class="site-header" data-surface="dark">
+  <nav class="site-header__bar" aria-label="Navegação principal">
+    <a href="../" class="site-header__brand" data-cursor="Home" aria-label="Detalz — ir para a home">
+      <span class="brand-logo" role="img" aria-label="Detalz"></span>
+    </a>
+
+    <div class="nav-links">
+      <a href="../para-marcenarias/">Para marcenarias</a>
+      <a href="../para-industrias/" aria-current="page">Para indústrias <span class="dot"></span></a>
+      <a href="../para-lojistas/">Para lojistas</a>
+    </div>
+
+    <div class="ds-row" style="gap:var(--space-2)">
+      <a href="#contato" class="btn btn--primary" data-magnetic data-cursor="Falar" style="display:none" data-nav-cta>Falar com um especialista</a>
+      <button type="button" id="menuToggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu glass" id="mobileMenu">
+    <a href="../para-marcenarias/">Para marcenarias</a>
+    <a href="../para-industrias/" aria-current="page">Para indústrias</a>
+    <a href="../para-lojistas/">Para lojistas</a>
+    <a href="#contato" class="btn btn--primary" style="width:100%;margin-top:var(--space-3)">Falar com um especialista</a>
+  </div>
+</header>
+
+<main id="topo">
+
+<!-- ============================== HERÓI ============================== -->
+<section class="hero" data-surface="dark">
+  <div class="hero__field ambient-field-strong" data-hero-field></div>
+  <div class="tech-grid"></div>
+  <div class="hero__veil"></div>
+
+  <div class="ds-canvas" style="position:relative">
+    <div data-hero-copy style="max-width:56rem">
+      <p class="ds-eyebrow ds-row" style="gap:var(--space-4);color:var(--mineral-fg)" data-hero-el>
+        <span class="ds-rule" data-hero-rule style="width:2.5rem;background:var(--mineral)"></span>
+        Para indústrias de móveis
+      </p>
+
+      <h1 class="ds-hero" style="margin-top:var(--space-6)" data-hero-title>
+        Sua rede orçando em minutos. Com o seu preço e a sua engenharia.
+      </h1>
+
+      <p class="ds-lead" style="margin-top:var(--space-8);max-width:36rem" data-hero-el>
+        A Detalz estrutura a biblioteca, a engenharia e a formação de preços da sua
+        indústria na plataforma. A partir daí, cada lojista orça em minutos, lendo
+        o projeto do arquiteto ou montando do zero, sem precisar projetar o ambiente
+        inteiro para descobrir um preço.
+      </p>
+
+      <div class="ds-row" style="margin-top:var(--space-10);gap:var(--space-3)" data-hero-el>
+        <a href="#contato" class="btn btn--primary btn--lg" data-magnetic data-cursor="Agendar">
+          Agendar diagnóstico da biblioteca
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#como-funciona" class="btn btn--ghost btn--lg" data-magnetic data-cursor="Ver">
+          Ver como funciona
+        </a>
+      </div>
+
+      <dl class="ds-row" style="margin-top:var(--space-16);gap:var(--space-10)" data-hero-el>
+        <div>
+          <dt class="ds-micro">Orçamento no ponto de venda</dt>
+          <dd class="ds-numeric-total" style="font-size:1.5rem;margin-top:var(--space-2)">Minutos</dd>
+        </div>
+        <div>
+          <dt class="ds-micro">Tabela na rede inteira</dt>
+          <dd class="ds-numeric-total" style="font-size:1.5rem;margin-top:var(--space-2)">Vigente</dd>
+        </div>
+        <div>
+          <dt class="ds-micro">Versões velhas circulando</dt>
+          <dd class="ds-numeric-total" style="font-size:1.5rem;margin-top:var(--space-2);color:var(--mineral-fg)">00</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="ds-canvas hero__footer" style="position:absolute;inset-inline:0;bottom:var(--space-8);pointer-events:none" data-hero-el>
+    <span class="ds-technical t-muted">BIBLIOTECA → ENGENHARIA → TABELA → REDE</span>
+    <span class="ds-row" style="gap:var(--space-3)">
+      <span class="ds-micro">Role para ver</span>
+      <span style="display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:var(--radius-full);border:1px solid var(--border)">
+        <svg data-scroll-arrow viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+      </span>
+    </span>
+  </div>
+</section>
+
+<!-- ============================ TICKER ============================== -->
+<section data-surface="elevated" style="position:relative;z-index:10;overflow:hidden;border-block:1px solid var(--border-subtle);padding-block:var(--space-4)">
+  <div class="marquee edge-fade" data-marquee data-speed="-0.5">
+    <div class="marquee-row">
+      <span>Biblioteca</span><span class="sep">◆</span>
+      <span>Engenharia</span><span class="sep">◆</span>
+      <span>Tabela</span><span class="sep">◆</span>
+      <span>Markup</span><span class="sep">◆</span>
+      <span>Rede</span><span class="sep">◆</span>
+      <span>Ponto de venda</span><span class="sep">◆</span>
+      <span>Pedido</span><span class="sep">◆</span>
+      <span>Padrão</span><span class="sep">◆</span>
+    </div>
+    <div class="marquee-row" aria-hidden="true">
+      <span>Biblioteca</span><span class="sep">◆</span>
+      <span>Engenharia</span><span class="sep">◆</span>
+      <span>Tabela</span><span class="sep">◆</span>
+      <span>Markup</span><span class="sep">◆</span>
+      <span>Rede</span><span class="sep">◆</span>
+      <span>Ponto de venda</span><span class="sep">◆</span>
+      <span>Pedido</span><span class="sep">◆</span>
+      <span>Padrão</span><span class="sep">◆</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== (01) · O PROBLEMA REAL ===================== -->
+<section data-surface="dark" class="ds-section-y">
+  <div class="ds-canvas ds-grid lg:cols-split" style="gap:var(--space-16)">
+    <div>
+      <p class="ds-eyebrow" data-reveal>(01) · O problema real</p>
+      <h2 class="ds-title" style="margin-top:var(--space-5);max-width:20ch" data-split="lines">
+        Hoje, o seu preço mora atrás do projeto.
+      </h2>
+      <p class="ds-body t-muted" style="margin-top:var(--space-6);max-width:52ch" data-reveal>
+        Para o lojista saber quanto a indústria cobra, e quanto ele pode cobrar do
+        consumidor, alguém precisa antes projetar o ambiente inteiro no software de
+        projeto de sempre. Isso leva dias. Enquanto isso, o consumidor final ouve
+        o concorrente.
+      </p>
+      <p class="ds-body t-muted" style="margin-top:var(--space-4);max-width:52ch" data-reveal>
+        E quando o orçamento finalmente sai, nem sempre sai certo. Tabela desatualizada
+        circulando em planilha, desconto improvisado no balcão, desenho vendido que
+        a fábrica não produz como foi prometido.
+      </p>
+    </div>
+
+    <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)" data-reveal>
+      <div class="ds-row" style="justify-content:space-between;padding-bottom:var(--space-6);border-bottom:1px solid var(--border-subtle)">
+        <span class="ds-technical t-mineral">O CUSTO QUE NÃO VIRA RELATÓRIO</span>
+        <span class="chip chip--danger">Invisível</span>
+      </div>
+      <div class="ds-stack" style="margin-top:var(--space-6);gap:var(--space-3)">
+        <div class="op-row">
+          <div class="op-row__body">
+            <p class="op-row__title">Orçamentos que a rede deixa de fazer</p>
+          </div>
+          <span class="ds-technical t-muted">01</span>
+        </div>
+        <div class="op-row">
+          <div class="op-row__body">
+            <p class="op-row__title">Pedidos que esfriam</p>
+          </div>
+          <span class="ds-technical t-muted">02</span>
+        </div>
+        <div class="op-row">
+          <div class="op-row__body">
+            <p class="op-row__title">Vendas que nem começam</p>
+          </div>
+          <span class="ds-technical t-muted">03</span>
+        </div>
+      </div>
+      <div class="ds-row" style="gap:var(--space-2);margin-top:var(--space-6);padding-top:var(--space-5);border-top:1px solid var(--border-subtle)">
+        <span class="chip chip--warn">Planilha paralela</span>
+        <span class="chip chip--warn">Desconto no balcão</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== (02) · O QUE MUDA ======================== -->
+<section data-surface="elevated" class="ds-section-y" style="border-top:1px solid var(--border-subtle)">
+  <div class="ds-canvas">
+    <div class="ds-section-head">
+      <p class="ds-eyebrow" data-reveal>(02) · O que muda</p>
+      <h2 class="ds-title" style="margin-top:var(--space-5);max-width:24ch" data-split="lines">
+        Sua engenharia e sua tabela, trabalhando em cada ponto de venda.
+      </h2>
+    </div>
+
+    <div class="ds-grid md:cols-2" data-stagger>
+      <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)">
+        <span class="dot"></span>
+        <h3 class="ds-heading" style="margin-top:var(--space-4);font-size:1.25rem">Biblioteca viva</h3>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Módulos, materiais e regras construtivas da indústria estruturados na
+          plataforma. O que o lojista vende é o que a fábrica produz, sem pedido
+          inviável voltando como retrabalho.
+        </p>
+      </div>
+      <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)">
+        <span class="dot"></span>
+        <h3 class="ds-heading" style="margin-top:var(--space-4);font-size:1.25rem">Preço sob controle</h3>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          A formação de preço é sua: a rede orça sobre a tabela vigente, sem planilha
+          paralela. Sobre o seu preço, o lojista aplica o markup dele. E como a
+          plataforma ajuda a calcular esse markup, sobra menos desconto improvisado
+          no balcão.
+        </p>
+      </div>
+      <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)">
+        <span class="dot"></span>
+        <h3 class="ds-heading" style="margin-top:var(--space-4);font-size:1.25rem">Orçamento em minutos</h3>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          A IA lê o projeto do arquiteto ou guia a montagem do zero. Projetar o
+          ambiente completo deixa de ser pré-requisito para dar um preço.
+        </p>
+      </div>
+      <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)">
+        <span class="dot"></span>
+        <h3 class="ds-heading" style="margin-top:var(--space-4);font-size:1.25rem">Pedido coerente</h3>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          O que chega à fábrica já nasceu dentro da sua engenharia: medidas, ferragens
+          e usinagens coerentes com o seu padrão.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= (03) · COMO FUNCIONA ====================== -->
+<section id="como-funciona" data-surface="dark" class="ds-section-y">
+  <div class="ds-canvas">
+    <div class="ds-section-head ds-section-head--split">
+      <div>
+        <p class="ds-eyebrow" data-reveal>(03) · Como funciona</p>
+        <h2 class="ds-title" style="margin-top:var(--space-5)" data-split="lines">
+          Nós fazemos a lição de casa. A rede colhe o resultado.
+        </h2>
+      </div>
+      <p class="ds-body t-muted" data-reveal>
+        A implantação é trabalho nosso. A indústria não recebe um login e um manual:
+        recebe a própria operação organizada na plataforma.
+      </p>
+    </div>
+
+    <div class="ds-grid md:cols-2" data-stagger>
+      <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)">
+        <div class="ds-row" style="justify-content:space-between">
+          <span class="ds-numeric-total" style="font-size:2.25rem;color:var(--mineral-fg)">01</span>
+          <span class="chip chip--outline">Diagnóstico</span>
+        </div>
+        <h3 class="ds-heading" style="margin-top:var(--space-5);font-size:1.25rem">Diagnóstico</h3>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Entendemos sua biblioteca, sua engenharia e sua formação de preços como
+          elas são hoje, inclusive onde elas moram: sistema, planilha ou cabeça
+          de alguém.
+        </p>
+      </div>
+      <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)">
+        <div class="ds-row" style="justify-content:space-between">
+          <span class="ds-numeric-total" style="font-size:2.25rem;color:var(--mineral-fg)">02</span>
+          <span class="chip chip--outline">Implantação</span>
+        </div>
+        <h3 class="ds-heading" style="margin-top:var(--space-5);font-size:1.25rem">Implantação</h3>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Nossa equipe de engenharia estrutura tudo na plataforma. Você não recebe
+          um login e um manual. Recebe a sua operação organizada.
+        </p>
+      </div>
+      <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)">
+        <div class="ds-row" style="justify-content:space-between">
+          <span class="ds-numeric-total" style="font-size:2.25rem;color:var(--mineral-fg)">03</span>
+          <span class="chip chip--outline">Rede conectada</span>
+        </div>
+        <h3 class="ds-heading" style="margin-top:var(--space-5);font-size:1.25rem">Rede conectada</h3>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Seus lojistas passam a orçar com a sua biblioteca e a sua tabela.
+        </p>
+      </div>
+      <div class="card" style="padding:clamp(1.5rem,3vw,2.5rem)">
+        <div class="ds-row" style="justify-content:space-between">
+          <span class="ds-numeric-total" style="font-size:2.25rem;color:var(--mineral-fg)">04</span>
+          <span class="chip chip--outline">Evolução contínua</span>
+        </div>
+        <h3 class="ds-heading" style="margin-top:var(--space-5);font-size:1.25rem">Evolução contínua</h3>
+        <p class="ds-body t-muted" style="margin-top:var(--space-3)">
+          Mudou a tabela ou a biblioteca, mudou para a rede inteira. A manutenção
+          contínua faz parte do serviço: sem redistribuir arquivo, sem versão velha
+          circulando.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== (04) · BLOCO CONSULTIVO ===================== -->
+<section data-surface="elevated" class="ds-section-y" style="position:relative;overflow:hidden;border-block:1px solid var(--border-subtle)">
+  <div class="ambient-field" style="position:absolute;inset:0;pointer-events:none"></div>
+  <div class="ds-canvas ds-canvas--text" style="position:relative;text-align:center">
+    <p class="ds-eyebrow" data-reveal>(04) · Onde a Detalz entra</p>
+    <h2 class="ds-title" style="margin-top:var(--space-5)" data-split="lines">
+      Não é um software a mais para a sua rede.
+    </h2>
+    <p class="ds-lead" style="margin-top:var(--space-6);text-align:left" data-reveal>
+      O software de projeto que você já usa continua tendo o seu lugar: no
+      detalhamento, na apresentação. A Detalz entra onde ele nunca esteve, entre
+      o interesse do cliente e o preço. O que entregamos não é uma ferramenta para
+      a rede aprender. É a sua engenharia e a sua tabela respondendo por ela.
+    </p>
+    <div class="ds-row" style="justify-content:center;margin-top:var(--space-8);gap:var(--space-2)" data-stagger>
+      <span class="chip chip--outline">Software de projeto · detalhamento e apresentação</span>
+      <span class="chip chip--mineral">Detalz · do interesse ao preço</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========================== (05) · PERGUNTAS ======================= -->
+<section id="perguntas" data-surface="dark" class="ds-section-y">
+  <div class="ds-canvas ds-grid lg:cols-split" style="gap:var(--space-16)">
+    <div style="position:sticky;top:8rem;align-self:start">
+      <p class="ds-eyebrow" data-reveal>(05) · Perguntas</p>
+      <h2 class="ds-title" style="margin-top:var(--space-5);max-width:20ch" data-split="lines">
+        O que costuma vir antes do diagnóstico.
+      </h2>
+      <p class="ds-body t-muted" style="margin-top:var(--space-6);max-width:44ch" data-reveal>
+        Tabela, markup do lojista, biblioteca espalhada e modelo comercial.
+      </p>
+      <a href="#contato" class="btn btn--primary" data-magnetic data-cursor="Falar" style="margin-top:var(--space-8)" data-reveal>
+        Falar com um especialista
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+      </a>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item is-open">
+        <button type="button" class="faq-head" aria-expanded="true">
+          <span class="ds-heading" style="font-size:1.125rem">O lojista vê o preço que a indústria cobra dele?</span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </span>
+        </button>
+        <div class="faq-body"><div class="ds-body">
+          Sim. E é assim que o orçamento fica rápido e confiável: o preço que você
+          cobra do lojista é a base do cálculo. Sobre ele, o lojista aplica o próprio
+          markup, que é dele. A plataforma ainda ajuda o lojista a calcular qual
+          markup faz sentido para a operação dele. Sua tabela chega íntegra ao ponto
+          de venda, e a margem de cada um permanece de cada um.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-head" aria-expanded="false">
+          <span class="ds-heading" style="font-size:1.125rem">Meus lojistas vão precisar aprender outro software de projeto?</span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </span>
+        </button>
+        <div class="faq-body"><div class="ds-body">
+          Não. O fluxo não começa no desenho. Começa no projeto do arquiteto lido
+          pela IA, ou numa montagem guiada, direto na conversa com o cliente.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-head" aria-expanded="false">
+          <span class="ds-heading" style="font-size:1.125rem">Nossa biblioteca está espalhada em sistemas e planilhas. E agora?</span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </span>
+        </button>
+        <div class="faq-body"><div class="ds-body">
+          É exatamente daí que a implantação parte. A equipe de engenharia organiza
+          o conhecimento na Detalz sem que você precise reescrever nada sozinho.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-head" aria-expanded="false">
+          <span class="ds-heading" style="font-size:1.125rem">E quando a tabela muda?</span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </span>
+        </button>
+        <div class="faq-body"><div class="ds-body">
+          Atualizou na origem, vale para a rede inteira no mesmo momento.
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-head" aria-expanded="false">
+          <span class="ds-heading" style="font-size:1.125rem">Como é o modelo comercial?</span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </span>
+        </button>
+        <div class="faq-body"><div class="ds-body">
+          A indústria investe um valor recorrente que cobre o suporte e a manutenção
+          contínua da biblioteca e da tabela. Sua rede sempre orça sobre a versão
+          vigente, sem que você precise redistribuir nada. O lojista paga por uso,
+          em créditos consumidos ao subir um projeto ou projetar na plataforma.
+          Os formatos são detalhados na conversa inicial.
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CTA FINAL ============================ -->
+<section data-surface="dark" style="position:relative;overflow:hidden;padding-block:clamp(6rem,16vh,11rem);border-top:1px solid var(--border-subtle)">
+  <div class="ambient-field" style="position:absolute;inset:0;pointer-events:none"></div>
+  <div class="tech-grid"></div>
+  <div class="ds-canvas ds-canvas--text" style="position:relative;text-align:center">
+    <p class="ds-eyebrow" data-reveal>Primeiro passo</p>
+    <h2 class="ds-title" style="margin-top:var(--space-5)" data-split="lines">
+      Vamos começar pela sua biblioteca, não pelo software.
+    </h2>
+    <p class="ds-lead" style="margin-top:var(--space-6);text-align:left" data-reveal>
+      Na primeira conversa, mapeamos como sua biblioteca, sua engenharia e sua
+      tabela funcionam hoje e mostramos, com um projeto real, como a rede orçaria
+      em minutos.
+    </p>
+    <div class="ds-row" style="justify-content:center;margin-top:var(--space-10)" data-reveal>
+      <a href="#contato" class="btn btn--primary btn--lg" data-magnetic data-cursor="Agendar">
+        Agendar diagnóstico
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================= RODAPÉ ============================= -->
+<footer id="contato" data-surface="dark" style="position:relative;overflow:hidden">
+  <div class="ambient-field" style="position:absolute;inset:0;pointer-events:none"></div>
+
+  <div class="ds-canvas" style="position:relative;padding-top:var(--space-10)">
+    <div class="ds-row" style="gap:var(--space-5);flex-wrap:nowrap">
+      <span class="ds-rule" data-line style="flex:1;background:var(--border)"></span>
+      <span class="pulse-dot" style="display:grid;place-items:center;width:2.75rem;height:2.75rem;border-radius:var(--radius-full);border:1px solid var(--border);flex:none;color:var(--mineral-fg)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
+      </span>
+    </div>
+
+    <div class="ds-grid md:cols-2 lg:cols-4" style="padding-block:var(--space-16);gap:var(--space-12) var(--space-8)" data-stagger>
+      <div>
+        <h3 class="ds-micro ds-row" style="gap:var(--space-3)"><span class="dot"></span>Soluções</h3>
+        <nav class="ds-stack" style="margin-top:var(--space-6);gap:var(--space-3)" aria-label="Soluções">
+          <a href="../para-industrias/" class="link-underline t-muted" style="width:fit-content" aria-current="page">Para indústrias</a>
+          <a href="../para-lojistas/" class="link-underline t-muted" style="width:fit-content">Para lojistas</a>
+          <a href="../para-marcenarias/" class="link-underline t-muted" style="width:fit-content">Para marcenarias</a>
+        </nav>
+      </div>
+      <div>
+        <h3 class="ds-micro ds-row" style="gap:var(--space-3)"><span class="dot"></span>Plataforma</h3>
+        <nav class="ds-stack" style="margin-top:var(--space-6);gap:var(--space-3)" aria-label="Plataforma">
+          <a href="../#plataforma" class="link-underline t-muted" style="width:fit-content">Leitura de documentos</a>
+          <a href="../#plataforma" class="link-underline t-muted" style="width:fit-content">Motor de orçamento</a>
+          <a href="../#plataforma" class="link-underline t-muted" style="width:fit-content">Portão de produção</a>
+          <a href="../#plataforma" class="link-underline t-muted" style="width:fit-content">Talez, o copiloto</a>
+          <a href="../#plataforma" class="link-underline t-muted" style="width:fit-content">Histórico de decisões</a>
+        </nav>
+      </div>
+      <div>
+        <h3 class="ds-micro ds-row" style="gap:var(--space-3)"><span class="dot"></span>Empresa</h3>
+        <nav class="ds-stack" style="margin-top:var(--space-6);gap:var(--space-3)" aria-label="Empresa">
+          <a href="#" class="link-underline t-muted" style="width:fit-content">Sobre a LUDCO</a>
+          <a href="../#parceiros" class="link-underline t-muted" style="width:fit-content">Parceiros</a>
+          <a href="#" class="link-underline t-muted" style="width:fit-content">Carreiras</a>
+          <a href="#perguntas" class="link-underline t-muted" style="width:fit-content">Perguntas</a>
+        </nav>
+      </div>
+      <div>
+        <h3 class="ds-micro ds-row" style="gap:var(--space-3)"><span class="dot"></span>Suporte</h3>
+        <nav class="ds-stack" style="margin-top:var(--space-6);gap:var(--space-3)" aria-label="Suporte">
+          <a href="#" class="link-underline t-muted" style="width:fit-content">Central de ajuda</a>
+          <a href="#" class="link-underline t-muted" style="width:fit-content">Implantação</a>
+          <a href="#" class="link-underline t-muted" style="width:fit-content">Status</a>
+          <a href="#contato" class="link-underline t-muted" style="width:fit-content">Contato</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="ds-grid lg:cols-split" style="position:relative;min-height:18rem;padding-bottom:var(--space-10);align-items:end;gap:var(--space-12)">
+      <div style="position:relative;z-index:1;max-width:28rem">
+        <h2 class="ds-heading" data-split="lines">Agende o diagnóstico da sua biblioteca.</h2>
+        <p class="ds-body t-muted" style="margin-top:var(--space-4)" data-reveal>
+          Na primeira conversa, mapeamos como sua biblioteca, sua engenharia e sua
+          tabela funcionam hoje e mostramos, com um projeto real, como a rede
+          orçaria em minutos.
+        </p>
+        <form class="inline-form" id="leadForm" style="margin-top:var(--space-6)" action="#" method="post">
+          <label for="lead-email" class="sr-only">Seu e-mail</label>
+          <input id="lead-email" name="email" type="email" required placeholder="seu@email.com.br">
+          <button type="submit" aria-label="Agendar diagnóstico da biblioteca" data-cursor="Enviar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </form>
+        <p class="ds-meta" style="margin-top:var(--space-3)">Deixe seu e-mail profissional para falar com nosso time.</p>
+        <p class="ds-technical t-mineral" id="leadMsg" style="margin-top:var(--space-3);opacity:0">Recebido. Retornamos em até um dia útil.</p>
+      </div>
+
+      <div style="position:relative;min-height:12rem">
+        <p class="footer-wordmark">DETALZ</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid var(--border-subtle)">
+    <div class="ds-canvas ds-row" style="justify-content:space-between;padding-block:var(--space-6);gap:var(--space-6)">
+      <p class="ds-meta">© 2026 Detalz · uma iniciativa LUDCO</p>
+      <div class="ds-row" style="gap:var(--space-2)">
+        <a href="#" class="social-btn" aria-label="Instagram" data-magnetic data-cursor="Seguir">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24s3.668-.014 4.948-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="LinkedIn" data-magnetic data-cursor="Seguir">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1 0-4.124 2.062 2.062 0 0 1 0 4.124zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="YouTube" data-magnetic data-cursor="Assistir">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+      </div>
+      <nav class="ds-row" style="gap:var(--space-4)" aria-label="Legal">
+        <a href="#" class="ds-meta link-underline">Privacidade</a>
+        <a href="#" class="ds-meta link-underline">Termos</a>
+        <a href="#" class="ds-meta link-underline">Acessibilidade</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body>
+</html>

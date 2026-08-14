@@ -414,6 +414,80 @@
 
 .nav-links a:is(:hover, .is-hover) { color: var(--foreground); background: var(--accent); }
 
+.nav-links a[aria-current="page"] { color: var(--mineral-fg); }
+
+/* Menu suspenso de públicos — abre por hover/foco no desktop e por clique
+   (classe .is-open) onde o ponteiro é toque. */
+.nav-dropdown { position: relative; }
+
+.nav-dropdown__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  transition: color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
+}
+
+.nav-dropdown__trigger svg { transition: transform var(--dur-base) var(--ease-out); }
+
+.nav-dropdown:hover .nav-dropdown__trigger,
+.nav-dropdown:focus-within .nav-dropdown__trigger,
+.nav-dropdown.is-open .nav-dropdown__trigger { color: var(--foreground); background: var(--accent); }
+
+.nav-dropdown:hover .nav-dropdown__trigger svg,
+.nav-dropdown:focus-within .nav-dropdown__trigger svg,
+.nav-dropdown.is-open .nav-dropdown__trigger svg { transform: rotate(180deg); }
+
+.nav-dropdown__menu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 50%;
+  min-width: 15.5rem;
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(6px);
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+}
+
+.nav-dropdown:hover .nav-dropdown__menu,
+.nav-dropdown:focus-within .nav-dropdown__menu,
+.nav-dropdown.is-open .nav-dropdown__menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-dropdown__menu a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.02em;
+  color: var(--muted-foreground);
+  transition: color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
+}
+
+.nav-dropdown__menu a:is(:hover, .is-hover) { color: var(--foreground); background: var(--accent); }
+
+.nav-dropdown__menu a[aria-current="page"] { color: var(--mineral-fg); }
+
 .menu-toggle {
   display: grid;
   place-items: center;

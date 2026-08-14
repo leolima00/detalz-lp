@@ -10,8 +10,17 @@ com contrato declarado.
 
 ```
 Detalz/
-├── index.html               Landing page completa
+├── index.html               Home institucional (/)
+├── para-industrias/
+│   └── index.html           Página para indústrias (/para-industrias/)
+├── para-lojistas/
+│   └── index.html           Página para lojistas (/para-lojistas/)
+├── para-marcenarias/
+│   └── index.html           Página para marcenarias (/para-marcenarias/)
 ├── design-system.html       Referência viva: tokens, componentes, movimento
+├── 404.html                 Página de erro (estática, sem JS/GSAP)
+├── robots.txt                SEO: liberação de indexação + sitemap
+├── sitemap.xml               SEO: mapa das 4 páginas do site
 ├── assets/
 │   ├── brand/               Logotipo, marca reduzida, favicon, Open Graph
 │   ├── css/
@@ -21,19 +30,71 @@ Detalz/
 │   │   └── motion.css       Estados pré-animação, keyframes, reduced-motion
 │   └── js/
 │       └── motion.js        Engine GSAP + ScrollTrigger + Lenis
+├── docs/
+│   └── copy-site.md         Copy consolidado de todas as páginas (fonte de conteúdo)
+├── package.json             Scripts de servidor local (sem dependências)
 └── README.md
 ```
 
-Sem build. Sem framework. Abra o `index.html` num servidor estático:
+## Rotas
+
+Cada página do site vive em sua própria pasta com um `index.html`, o padrão
+estático que qualquer servidor (local ou de produção) resolve como URL limpa:
+
+| Rota | Arquivo |
+| --- | --- |
+| `/` | `index.html` |
+| `/para-industrias/` | `para-industrias/index.html` |
+| `/para-lojistas/` | `para-lojistas/index.html` |
+| `/para-marcenarias/` | `para-marcenarias/index.html` |
+| `/design-system.html` | `design-system.html` (referência interna, fora da navegação) |
+| qualquer rota inexistente | `404.html` |
+
+Para criar uma nova página de público, replique uma pasta existente (ex.
+`para-marcenarias/`), ajuste o conteúdo e adicione o link nos três lugares que
+apontam para as páginas de público: o `nav-links`/`mobile-menu` do header e a
+coluna "Soluções" do rodapé — presentes nas 4 páginas — e a entrada
+correspondente em `sitemap.xml`.
+
+Todo asset é referenciado por caminho relativo (`assets/...` na raiz,
+`../assets/...` dentro de cada subpasta), então o site inteiro funciona sem
+nenhuma configuração de servidor, redirecionamento ou variável de ambiente.
+
+## Rodando localmente
+
+Sem build. Sem framework. Duas formas de servir os arquivos estáticos:
 
 ```bash
+npm run dev
+# ou, direto:
 python3 -m http.server 4321
-# http://localhost:4321/index.html
-# http://localhost:4321/design-system.html
 ```
+
+Depois, abra:
+
+- http://localhost:4321/
+- http://localhost:4321/para-industrias/
+- http://localhost:4321/para-lojistas/
+- http://localhost:4321/para-marcenarias/
+- http://localhost:4321/design-system.html
 
 Dependências vêm por CDN: GSAP 3.12.5, ScrollTrigger, Lenis 1.1.14 e as fontes
 Inter Tight / Inter / JetBrains Mono.
+
+## Deploy
+
+Como cada página é uma pasta com `index.html`, o site sobe sem nenhuma
+configuração extra em qualquer host estático — Netlify, Vercel, GitHub Pages,
+Cloudflare Pages ou um bucket S3 atrás de um CDN. Todos eles resolvem
+`/para-industrias/` para `para-industrias/index.html` nativamente.
+
+Antes de publicar em produção:
+
+1. Defina o domínio final e substitua `https://www.detalz.com.br` em
+   `robots.txt`, `sitemap.xml` e nas tags `<link rel="canonical">` /
+   `<meta property="og:url">` de cada página.
+2. Configure o formulário do rodapé (`#leadForm`) para enviar a um endpoint
+   real — hoje ele só existe como interface (`action="#"`).
 
 ---
 
