@@ -83,10 +83,32 @@ Inter Tight / Inter / JetBrains Mono.
 
 ## Deploy
 
-Como cada página é uma pasta com `index.html`, o site sobe sem nenhuma
-configuração extra em qualquer host estático — Netlify, Vercel, GitHub Pages,
-Cloudflare Pages ou um bucket S3 atrás de um CDN. Todos eles resolvem
-`/para-industrias/` para `para-industrias/index.html` nativamente.
+Site estático sem build — sobe direto na Vercel, Netlify, Cloudflare Pages
+ou qualquer host de arquivos estáticos.
+
+### Vercel (recomendado)
+
+1. Conecte o repositório `detalz-lp` na [Vercel](https://vercel.com/new).
+2. **Framework Preset:** Other (sem build).
+3. **Build Command:** deixe em branco.
+4. **Output Directory:** `.` (raiz do repositório).
+5. **Install Command:** deixe em branco (não há dependências npm).
+6. Deploy.
+
+O `vercel.json` na raiz já configura:
+- `trailingSlash: true` — alinhado com as URLs `/para-marcenarias/` etc.
+- cache longo para `/assets/*`
+- headers de segurança básicos
+- `404.html` como página de erro customizada
+
+Depois do primeiro deploy, aponte o domínio `www.detalz.com.br` nas
+configurações do projeto (Settings → Domains).
+
+### Outros hosts
+
+Como cada página é uma pasta com `index.html`, o site também funciona em
+Netlify, GitHub Pages ou Cloudflare Pages sem configuração extra — todos
+resolvem `/para-industrias/` para `para-industrias/index.html` nativamente.
 
 Antes de publicar em produção:
 

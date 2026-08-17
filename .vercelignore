@@ -1,0 +1,8 @@
+.agents/
+docs/
+skills-lock.json
+design-system.html
+.DS_Store
+*.log
+.env
+.env.*
