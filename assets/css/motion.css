@@ -32,14 +32,16 @@
 [data-story-grid] { overflow-x: clip; }
 
 /* Máscaras de linha produzidas pelo divisor de texto.
-   O padding superior é obrigatório: com leading apertado (0.86–0.94) o
-   overflow:hidden corta o til de "NÃO" e o acento de "Ó". A margem negativa
-   devolve o espaço para o fluxo, então nada se desloca. */
+   Com leading apertado (0.86–0.94) o overflow:hidden corta acentos/til no
+   topo e descendentes (g, j, p, q, y) embaixo. O padding compensa; a margem
+   negativa devolve o espaço para o fluxo, então nada se desloca. */
 .line-mask {
   display: block;
   overflow: hidden;
   padding-top: 0.16em;
   margin-top: -0.16em;
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
 }
 .line-inner { display: block; will-change: transform; }
 .word { display: inline-block; white-space: pre; }
