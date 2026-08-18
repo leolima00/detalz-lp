@@ -116,7 +116,10 @@
     });
 
     var panel = document.getElementById('payPanel');
-    if (panel) panel.classList.add('is-open');
+    if (panel) {
+      panel.hidden = false;
+      panel.classList.add('is-open');
+    }
 
     var amountLabel = document.getElementById('payAmountLabel');
     if (amountLabel) {
