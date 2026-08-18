@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /pagamento/
 
 Sitemap: https://www.detalz.com.br/sitemap.xml

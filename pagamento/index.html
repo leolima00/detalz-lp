@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-surface="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagamento · Movelsul | Detalz</title>
+<meta name="description" content="Condição da Movelsul. Abra o Pix no celular e leia o QR Code da implantação Detalz.">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#060708">
+
+<link rel="icon" href="../assets/brand/favicon.png" type="image/png" sizes="512x512">
+<link rel="icon" href="../assets/brand/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
+
+<meta property="og:title" content="Pagamento · Movelsul | Detalz">
+<meta property="og:description" content="Condição da Movelsul. Abra o Pix no celular e leia o QR Code da implantação.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.detalz.com.br/pagamento/">
+<meta property="og:image" content="https://www.detalz.com.br/assets/brand/og-detalz.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.detalz.com.br/assets/brand/og-detalz.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+</head>
+
+<body>
+
+<div id="dz-grain"></div>
+
+<header class="site-header" data-surface="dark" style="position:relative;top:0">
+  <nav class="site-header__bar" aria-label="Identificação">
+    <span class="site-header__brand">
+      <span class="brand-logo" role="img" aria-label="Detalz"></span>
+    </span>
+    <span class="chip chip--mineral">Movelsul</span>
+  </nav>
+</header>
+
+<main id="topo">
+  <section data-surface="dark" style="position:relative;overflow:hidden;padding-block:var(--space-12) var(--section-y)">
+    <div class="hero__field ambient-field-strong" style="position:absolute;inset:0;pointer-events:none"></div>
+    <div class="tech-grid"></div>
+
+    <div class="ds-canvas" style="position:relative">
+      <p class="ds-eyebrow ds-row" style="gap:var(--space-4);color:var(--mineral-fg)">
+        <span class="ds-rule" style="width:2.5rem;background:var(--mineral)"></span>
+        Condição da Movelsul
+      </p>
+
+      <h1 class="ds-title" style="margin-top:var(--space-6);max-width:18ch">
+        Abra o Pix no celular.
+      </h1>
+      <p class="ds-lead" style="margin-top:var(--space-6);max-width:42rem">
+        O QR Code já sai com o valor da implantação. A mensalidade começa depois,
+        com desconto nos três primeiros meses.
+      </p>
+
+      <div class="ds-grid lg:cols-3" style="margin-top:var(--space-12)" role="group" aria-label="Público">
+        <button type="button" class="card card-interactive pay-audience" data-pay-audience="marcenaria" aria-pressed="false">
+          <div class="ds-row" style="justify-content:space-between">
+            <span class="ds-technical t-mineral">01</span>
+            <span class="chip chip--mineral">60% off</span>
+          </div>
+          <div>
+            <h2 class="ds-heading">Marcenaria</h2>
+            <p class="ds-meta" style="margin-top:var(--space-3)">De R$ 7.500 por R$ 3.000 na implantação</p>
+          </div>
+        </button>
+
+        <button type="button" class="card card-interactive pay-audience" data-pay-audience="industria" aria-pressed="false">
+          <div class="ds-row" style="justify-content:space-between">
+            <span class="ds-technical t-mineral">02</span>
+            <span class="chip chip--outline">Sob medida</span>
+          </div>
+          <div>
+            <h2 class="ds-heading">Indústria</h2>
+            <p class="ds-meta" style="margin-top:var(--space-3)">Projeto sob medida · valor combinado neste stand</p>
+          </div>
+        </button>
+
+        <button type="button" class="card card-interactive pay-audience" data-pay-audience="lojista" aria-pressed="false">
+          <div class="ds-row" style="justify-content:space-between">
+            <span class="ds-technical t-mineral">03</span>
+            <span class="chip chip--mineral">60% off</span>
+          </div>
+          <div>
+            <h2 class="ds-heading">Lojista</h2>
+            <p class="ds-meta" style="margin-top:var(--space-3)">De R$ 3.000 por R$ 1.200 na implantação</p>
+          </div>
+        </button>
+      </div>
+
+      <article class="card-raised pay-panel" id="payPanel" aria-live="polite">
+        <div class="pay-panel__grid">
+          <div>
+            <p class="ds-eyebrow t-mineral">Condição comercial</p>
+
+            <div data-pay-detail="marcenaria" hidden>
+              <h2 class="ds-heading" style="margin-top:var(--space-4)">Marcenaria</h2>
+              <div class="ds-grid md:cols-2" style="margin-top:var(--space-8);gap:var(--space-8)">
+                <div class="metric">
+                  <p class="ds-row" style="gap:var(--space-3);margin-bottom:var(--space-3)">
+                    <span class="pay-was">R$ 7.500</span>
+                    <span class="chip chip--ok">60% off</span>
+                  </p>
+                  <p class="metric__value">R$ 3.000</p>
+                  <p class="metric__label">Implantação · paga agora</p>
+                </div>
+                <div class="metric">
+                  <p class="pay-was" style="margin-bottom:var(--space-3)">R$ 2.500 / mês</p>
+                  <p class="metric__value">R$ 1.500</p>
+                  <p class="metric__label">Mensalidade · 3 primeiros meses</p>
+                </div>
+              </div>
+            </div>
+
+            <div data-pay-detail="industria" hidden>
+              <h2 class="ds-heading" style="margin-top:var(--space-4)">Indústria</h2>
+              <div class="metric" style="margin-top:var(--space-8)">
+                <p class="metric__value" style="font-size:clamp(1.75rem,3vw,2.25rem)">Projeto sob medida</p>
+                <p class="metric__label">Implantação · valor combinado</p>
+              </div>
+              <p class="ds-body t-muted" style="margin-top:var(--space-6);max-width:42ch">
+                A indústria não tem um valor único. Digite no app do banco o valor
+                combinado agora, neste stand.
+              </p>
+            </div>
+
+            <div data-pay-detail="lojista" hidden>
+              <h2 class="ds-heading" style="margin-top:var(--space-4)">Lojista</h2>
+              <div class="ds-grid md:cols-2" style="margin-top:var(--space-8);gap:var(--space-8)">
+                <div class="metric">
+                  <p class="ds-row" style="gap:var(--space-3);margin-bottom:var(--space-3)">
+                    <span class="pay-was">R$ 3.000</span>
+                    <span class="chip chip--ok">60% off</span>
+                  </p>
+                  <p class="metric__value">R$ 1.200</p>
+                  <p class="metric__label">Implantação · paga agora</p>
+                </div>
+                <div class="metric">
+                  <p class="pay-was" style="margin-bottom:var(--space-3)">R$ 450 / mês</p>
+                  <p class="metric__value">R$ 300</p>
+                  <p class="metric__label">Mensalidade · 3 primeiros meses</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="op-row" style="margin-top:var(--space-8)">
+              <div class="op-row__body">
+                <p class="op-row__title">Recebedor</p>
+                <p class="ds-meta">LUDCO Assessoria em Marketing Ltda</p>
+              </div>
+              <span class="ds-technical t-mineral">53.095.099/0001-19</span>
+            </div>
+            <p class="ds-meta" style="margin-top:var(--space-4)">
+              A mensalidade começa depois da implantação. Este Pix é só a entrada.
+            </p>
+          </div>
+
+          <div class="surface-operational" style="padding:clamp(1.25rem,2.5vw,1.75rem)">
+            <div class="ds-row" style="justify-content:space-between">
+              <span class="ds-technical t-mineral">Pix · implantação</span>
+              <span class="chip chip--mineral" id="payAmountLabel"></span>
+            </div>
+
+            <div class="pay-qr-frame" style="margin-top:var(--space-5)">
+              <div id="payQr"></div>
+            </div>
+
+            <p class="ds-meta" id="payQrHint" style="margin-top:var(--space-4)"></p>
+
+            <label class="ds-micro" for="payCopy" style="display:block;margin-top:var(--space-5)">Se o QR não ler, copie o código</label>
+            <div class="pay-code" style="margin-top:var(--space-2)">
+              <textarea id="payCopy" rows="3" readonly spellcheck="false"></textarea>
+              <button type="button" id="payCopyBtn">Copiar</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer data-surface="dark" style="border-top:1px solid var(--border-subtle)">
+  <div class="ds-canvas ds-row" style="justify-content:space-between;padding-block:var(--space-6);gap:var(--space-6)">
+    <p class="ds-meta">© 2026 Detalz · uma iniciativa LUDCO · CNPJ 53.095.099/0001-19</p>
+    <p class="ds-meta">Condição válida na Movelsul</p>
+  </div>
+</footer>
+
+<script src="../assets/js/vendor/qrcode.min.js"></script>
+<script src="../assets/js/pagamento.js"></script>
+</body>
+</html>
